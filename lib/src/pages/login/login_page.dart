@@ -17,6 +17,7 @@ class LoginPage extends StatelessWidget {
       body: Stack( // POSICIONAR ELEMENTOS UNO DEBAJO DEL OTRO
         children: [
           _backgroundCover(context),
+          _boxForm(context),
           Column( // POSICIONAR ELEMENTOS UNO DEBAJO DEL OTRO
             children: [
               _imageCover(),
@@ -47,6 +48,90 @@ class LoginPage extends StatelessWidget {
     );
   }
 
+  Widget _boxForm(BuildContext context){
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.45,
+      margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.35, left: 50, right: 50),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+                color: Colors.black54,
+                blurRadius: 15,
+                offset: Offset(0, 0.75)
+            )
+          ]
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            _textYourInfo(),
+            _textFieldEmail(),
+            _textFieldPassword(),
+            _buttonLogin()
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _textFieldEmail(){
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 40),
+      child: TextField(
+        keyboardType: TextInputType.emailAddress,
+        decoration: InputDecoration(
+          hintText: 'Correo electrónico',
+          prefixIcon: Icon(Icons.email)
+        ),
+      ),
+    );
+  }
+
+  Widget _textFieldPassword(){
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 40),
+      child: TextField(
+        keyboardType: TextInputType.text,
+        obscureText: true,
+        decoration: InputDecoration(
+            hintText: 'Contraseña',
+            prefixIcon: Icon(Icons.lock)
+        ),
+      ),
+    );
+  }
+
+  Widget _buttonLogin() {
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.symmetric(horizontal: 40, vertical: 40),
+      child: ElevatedButton(
+          onPressed: () {},
+          style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(vertical: 15)
+          ),
+          child: Text(
+            'LOGIN',
+            style: TextStyle(
+                color: Colors.black
+            ),
+          )
+      ),
+    );
+  }
+  Widget _textYourInfo(){
+    return Container(
+      margin: EdgeInsets.only(top: 40, bottom: 50),
+      child: Text(
+        'INGRESA ESTA INFORMACIÓN',
+        style: TextStyle(
+          color: Colors.black
+      ),
+      ),
+    );
+  }
+
   Widget _textDontHaveAccount(){
     return Row( // UBICAR ELEMENTOS UNO A LADO DEL OTRO (HORIZONTAl)
       mainAxisAlignment: MainAxisAlignment.center,
@@ -71,18 +156,18 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-//PRIVADO
+  // PRIVADO
   Widget _imageCover() {
-    return  SafeArea(
+    return SafeArea(
       child: Container(
-        margin: EdgeInsets.only(top: 35, bottom: 15),
+        margin: EdgeInsets.only(top: 20, bottom: 15),
         alignment: Alignment.center,
         child: Image.asset(
           'assets/img/delivery.png',
-          width: 200,
-          height: 200,
-        ), //image_asset
+          width: 130,
+          height: 130,
+        ),
       ),
-    ); //Container
+    ) ;
   }
 }
