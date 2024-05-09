@@ -38,12 +38,12 @@ class _MyAppState extends State<MyApp> {
             brightness: Brightness.light,
             onBackground: Colors.grey,
             onPrimary: Colors.grey,
-            surface: Colors.grey,
-            onSurface: Colors.grey,
+            surface: Colors.amber,
+            onSurface: Colors.red,
             error: Colors.grey,
             onError: Colors.grey,
             onSecondary: Colors.grey,
-            background: Colors.grey
+            background: Colors.white
         )
       ),
       navigatorKey: Get.key,

@@ -126,7 +126,8 @@ class LoginPage extends StatelessWidget {
       child: Text(
         'INGRESA ESTA INFORMACIÓN',
         style: TextStyle(
-          color: Colors.black
+          color: Colors.black,
+          fontSize: 18,
       ),
       ),
     );
