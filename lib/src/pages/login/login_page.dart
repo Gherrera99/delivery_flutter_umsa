@@ -1,11 +1,16 @@
 // import 'dart:js';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:delivery_flutter_app/src/pages/login/login_controller.dart';
+import 'package:get/get.dart';
+
+//import 'package:flutter/widgets.dart';
+//import 'package:flutter/cupertino.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+
+  LoginController con = Get.put(LoginController());
+
 
   @override
   Widget build(BuildContext context) {
@@ -145,12 +150,15 @@ class LoginPage extends StatelessWidget {
           ),
         ),
         SizedBox(width: 7),
-        Text(
-          'Registrate Aquí',
-          style: TextStyle(
-            color: Colors.amber,
-            fontWeight: FontWeight.bold,
-            fontSize: 20
+        GestureDetector(
+          onTap: () => con.goToRegisterPage(),
+          child: Text(
+            'Registrate Aquí',
+            style: TextStyle(
+              color: Colors.amber,
+              fontWeight: FontWeight.bold,
+              fontSize: 20
+            ),
           ),
         ),
       ],
