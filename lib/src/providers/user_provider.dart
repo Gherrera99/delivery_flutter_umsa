@@ -1,4 +1,5 @@
 import 'package:delivery_flutter_app/src/environment/environment.dart';
+import 'package:delivery_flutter_app/src/models/response_api.dart';
 import 'package:delivery_flutter_app/src/models/user.dart';
 import 'package:get/get.dart';
 
@@ -18,4 +19,33 @@ class UsersProvider extends GetConnect{
 
     return response;
   }
+
+
+  Future<ResponseApi> login(String email, String password) async{
+    Response response = await post(
+        '$url/login',
+        {
+          'email': email,
+          'password': password
+        },
+        headers: {
+          'Content-Type': 'application/json'
+        }
+    );//ESPERA HASTA QUE EL SERVIDOR RETORNE LA RESPUESTA
+
+    if (response.body == null){
+      Get.snackbar('Error', 'No se pudo ejecutar la peticion');
+      return ResponseApi();
+    }
+
+    ResponseApi responseApi = ResponseApi.fromJson(response.body);
+    return responseApi;
+  }
+
+
+
+
+
+
+
 }
