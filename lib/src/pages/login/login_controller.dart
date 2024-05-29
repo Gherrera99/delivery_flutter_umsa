@@ -2,6 +2,7 @@ import 'package:delivery_flutter_app/src/models/response_api.dart';
 import 'package:delivery_flutter_app/src/providers/user_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class LoginController extends GetxController{
 
@@ -30,7 +31,8 @@ class LoginController extends GetxController{
       print('Response Api: ${responseApi.toJson()}');
 
       if(responseApi.success == true){
-        Get.snackbar('Login exitoso', responseApi.message ?? '');
+        GetStorage().write('user', responseApi.data); //DATOS DEL USUARIO EN SESION
+        goToHomePage();
       }
       else{
         Get.snackbar('Formulario fallido', responseApi.message ?? '');
@@ -38,6 +40,12 @@ class LoginController extends GetxController{
 
     }
   }
+
+  void goToHomePage() {
+    Get.offNamedUntil('/home', (route) => false);
+  }
+
+
 
   bool isValidForm(String email, String password){
 

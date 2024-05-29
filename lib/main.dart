@@ -1,9 +1,17 @@
+import 'package:delivery_flutter_app/src/pages/home/home_page.dart';
 import 'package:delivery_flutter_app/src/pages/login/login_page.dart';
 import 'package:delivery_flutter_app/src/pages/register/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
-void main() {
+import 'package:delivery_flutter_app/src/models/user.dart';
+
+
+User userSession = User.fromJson(GetStorage().read('user') ?? {});
+
+void main() async {
+  await GetStorage.init();
   runApp(const MyApp());
 }
 
@@ -24,13 +32,16 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    print('Usuario id: ${userSession.id}');
+
     return GetMaterialApp(
       title: 'Rabbit Delivery',
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',
+      initialRoute: userSession.id != null ? '/home' : '/',
       getPages: [
         GetPage(name: '/', page: () => LoginPage()),
         GetPage(name: '/register', page: () => RegisterPage()),
+        GetPage(name: '/home', page: () => HomePage()),
       ],
       theme: ThemeData(
         primaryColor: Colors.amber,
