@@ -1,4 +1,5 @@
 import 'package:delivery_flutter_app/src/models/response_api.dart';
+import 'package:delivery_flutter_app/src/models/user.dart';
 import 'package:delivery_flutter_app/src/providers/user_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -10,7 +11,6 @@ class LoginController extends GetxController{
   TextEditingController passwordController = TextEditingController();
 
   UsersProvider usersProvider = UsersProvider();
-
 
 
   void goToRegisterPage() {
@@ -32,8 +32,19 @@ class LoginController extends GetxController{
 
       if(responseApi.success == true){
         GetStorage().write('user', responseApi.data); //DATOS DEL USUARIO EN SESION
+
+        User myUser = User.fromJson(GetStorage().read('user') ?? {});
+
+        print('Roles length: ${myUser.roles!.length}');
+
+        if (myUser.roles!.length > 1) {
+          goToRolesPage();
+        }
+        else { // SOLO UN ROL
+          goToClientProductPage();
+        }
+
         // goToHomePage();
-        goToRolesPage();
       }
       else{
         Get.snackbar('Formulario fallido', responseApi.message ?? '');
@@ -42,8 +53,8 @@ class LoginController extends GetxController{
     }
   }
 
-  void goToHomePage() {
-    Get.offNamedUntil('/home', (route) => false);
+  void goToClientProductPage() {
+    Get.offNamedUntil('/client/products/list', (route) => false);
   }
 
   void goToRolesPage() {
