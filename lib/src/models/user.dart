@@ -3,6 +3,7 @@
 //     final user = userFromJson(jsonString);
 
 import 'dart:convert';
+import 'Rol.dart';
 
 User userFromJson(String str) => User.fromJson(json.decode(str));
 
@@ -17,6 +18,7 @@ class User {
   String? image;
   String? password;
   String? sessionToken;
+  List<Rol>? roles = [];
 
   User({
      this.id,
@@ -26,7 +28,8 @@ class User {
      this.phone,
      this.image,
      this.password,
-    this.sessionToken
+     this.sessionToken,
+     this.roles
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -37,7 +40,8 @@ class User {
     phone: json["phone"],
     image: json["image"],
     password: json["password"],
-    sessionToken: json["session_token"]
+    sessionToken: json["session_token"],
+    roles: json["roles"] == null ? [] : List<Rol>.from(json["roles"].map((model) => Rol.fromJson(model))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -48,7 +52,7 @@ class User {
     "phone": phone,
     "image": image,
     "password": password,
-    "sesion_token": sessionToken
-
+    "sesion_token": sessionToken,
+    "roles": roles
   };
 }

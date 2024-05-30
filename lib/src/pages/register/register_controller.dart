@@ -2,10 +2,12 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:delivery_flutter_app/src/models/user.dart';
 import 'package:delivery_flutter_app/src/providers/user_provider.dart';
+import 'package:sn_progress_dialog/sn_progress_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:get/get.dart';import 'package:get_storage/get_storage.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../models/response_api.dart';
@@ -23,7 +25,7 @@ class RegisterController extends GetxController{
   ImagePicker picker = ImagePicker();
   File? imageFile;
 
-  void register() async {
+  void register(BuildContext context) async {
     String email = emailController.text.trim();
     String name = nameController.text;
     String lastname = lastnameController.text;
@@ -36,6 +38,9 @@ class RegisterController extends GetxController{
 
     if(isValidForm(email, name, lastname, phone, password, confirmPassword)){
 
+      ProgressDialog progressDialog = ProgressDialog(context: context);
+      progressDialog.show(max: 100, msg: 'Registrando datos...');
+
       User user = User(
         email: email,
         name: name,
@@ -46,6 +51,8 @@ class RegisterController extends GetxController{
 
       Stream stream = await usersProvider.createWithImage(user, imageFile!);
       stream.listen((res){
+
+        progressDialog.close();
         ResponseApi responseApi = ResponseApi.fromJson (json.decode(res));
 
           if (responseApi.success == true) {
@@ -116,7 +123,7 @@ class RegisterController extends GetxController{
 
 
     if (imageFile == null) {
-      Get.snackbar('Formulario no valido', 'Debes seleccionar una imagen de perfill');
+      Get.snackbar('Formulario no valido', 'Debes seleccionar una imagen de perfil');
       return false;
       }
 

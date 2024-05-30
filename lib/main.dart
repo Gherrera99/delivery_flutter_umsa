@@ -1,6 +1,7 @@
 import 'package:delivery_flutter_app/src/pages/home/home_page.dart';
 import 'package:delivery_flutter_app/src/pages/login/login_page.dart';
 import 'package:delivery_flutter_app/src/pages/register/register_page.dart';
+import 'package:delivery_flutter_app/src/pages/roles/roles_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -42,6 +43,7 @@ class _MyAppState extends State<MyApp> {
         GetPage(name: '/', page: () => LoginPage()),
         GetPage(name: '/register', page: () => RegisterPage()),
         GetPage(name: '/home', page: () => HomePage()),
+        GetPage(name: '/roles', page: () => RolesPage()),
       ],
       theme: ThemeData(
         primaryColor: Colors.amber,

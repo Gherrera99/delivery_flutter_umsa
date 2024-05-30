@@ -32,7 +32,8 @@ class LoginController extends GetxController{
 
       if(responseApi.success == true){
         GetStorage().write('user', responseApi.data); //DATOS DEL USUARIO EN SESION
-        goToHomePage();
+        // goToHomePage();
+        goToRolesPage();
       }
       else{
         Get.snackbar('Formulario fallido', responseApi.message ?? '');
@@ -43,6 +44,10 @@ class LoginController extends GetxController{
 
   void goToHomePage() {
     Get.offNamedUntil('/home', (route) => false);
+  }
+
+  void goToRolesPage() {
+    Get.offNamedUntil('/roles', (route) => false);
   }
 
 
