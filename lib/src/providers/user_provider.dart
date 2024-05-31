@@ -23,6 +23,25 @@ class UsersProvider extends GetConnect{
     return response;
   }
 
+
+  Future<ResponseApi> update(User user) async{
+    Response response = await put(
+        '$url/update',
+        user.toJson(),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+    );//ESPERA HASTA QUE EL SERVIDOR RETORNE LA RESPUESTA
+
+    if (response)
+    return response;
+  }
+
+
+
+
+
+
   Future<Stream> createWithImage(User user, File image) async {
     // Corrige la construcción de la URI aquí
     Uri uri = Uri.parse('${Environment.API_URL_OLD}api/users/createWithImage');
