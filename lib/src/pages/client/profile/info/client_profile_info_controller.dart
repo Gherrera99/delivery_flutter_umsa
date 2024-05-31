@@ -10,4 +10,8 @@ class ClientProfileInfoController extends GetxController {
     GetStorage().remove('user');
     Get.offNamedUntil('/', (route) => false); // ELIMINAR EL HISTORIAL DE PANTALLA
   }
+
+  void goToProfileUpdate(){
+    Get.toNamed('/client/profile/update');
+  }
 }

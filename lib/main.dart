@@ -1,5 +1,6 @@
 import 'package:delivery_flutter_app/src/pages/client/products/list/client_products_list_page.dart';
 import 'package:delivery_flutter_app/src/pages/client/profile/info/client_profile_info_page.dart';
+import 'package:delivery_flutter_app/src/pages/client/profile/update/client_profile_update_page.dart';
 import 'package:delivery_flutter_app/src/pages/delivery/orders/list/delivery_orders_list_page.dart';
 import 'package:delivery_flutter_app/src/pages/home/home_page.dart';
 import 'package:delivery_flutter_app/src/pages/login/login_page.dart';
@@ -52,6 +53,7 @@ class _MyAppState extends State<MyApp> {
         GetPage(name: '/delivery/orders/list', page: () => DeliveryOrdersListPage()),
         GetPage(name: '/client/products/list', page: () => ClientProductsListPage()),
         GetPage(name: '/client/profile/info', page: () => ClientProfileInfoPage()),
+        GetPage(name: '/client/profile/update', page: () => ClientProfileUpdatePage()),
       ],
       theme: ThemeData(
         primaryColor: Colors.amber,
