@@ -41,7 +41,7 @@ class RolesPage extends StatelessWidget {
                 image: NetworkImage(rol.image!),
                 fit: BoxFit.contain,
                 fadeInDuration: Duration(milliseconds: 50),
-                placeholder: AssetImage('assets/imh/no-image.png'),
+                placeholder: AssetImage('assets/img/no-image.png'),
             )
           ),
           Text(
