@@ -46,7 +46,7 @@ class ClientProfileUpdatePage extends StatelessWidget {
 
   Widget _boxForm(BuildContext context){
     return Container(
-      height: MediaQuery.of(context).size.height * 0.35,
+      height: MediaQuery.of(context).size.height * 0.4,
       margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.3, left: 50, right: 50),
       decoration: BoxDecoration(
           color: Colors.white,

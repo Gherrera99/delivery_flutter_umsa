@@ -1,11 +1,16 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:delivery_flutter_app/src/models/response_api.dart';
 import 'package:delivery_flutter_app/src/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
+
+import '../../../../providers/user_provider.dart';
+import '../info/client_profile_info_controller.dart';
 
 class ClientProfileUpdateController extends GetxController {
   User user = User.fromJson(GetStorage().read('user'));
@@ -16,6 +21,9 @@ class ClientProfileUpdateController extends GetxController {
 
   ImagePicker picker = ImagePicker();
   File? imageFile;
+
+  UsersProvider usersProvider = UsersProvider();
+  ClientProfileInfoController clientProfileInfoController = Get.find();
 
   ClientProfileUpdateController() {
     nameController.text = user.name ?? '';
@@ -37,8 +45,41 @@ class ClientProfileUpdateController extends GetxController {
           id: user.id,
           name: name,
           lastname: lastname,
-          phone: phone
+          phone: phone,
+          sessionToken: user.sessionToken
       );
+
+      if (imageFile == null) {
+        ResponseApi responseApi = await usersProvider.update(myUser);
+        print('Response Api Update: ${responseApi.data}');
+        Get.snackbar('Proceso terminado', responseApi.message ?? '');
+        progressDialog.close();
+
+        if (responseApi.success == true) {
+          GetStorage().write('user', responseApi.data);
+          clientProfileInfoController.user.value = User.fromJson(GetStorage().read('user') ?? {});
+        }
+      }
+      else {
+        Stream stream = await usersProvider.updateWithImage(myUser, imageFile!);
+        stream.listen((res){
+
+          progressDialog.close();
+          ResponseApi responseApi = ResponseApi.fromJson (json.decode(res));
+          Get.snackbar('Proceso terminado', responseApi.message ?? '');
+
+          if (responseApi.success == true) {
+            GetStorage().write('user', responseApi.data);
+            clientProfileInfoController.user.value = User.fromJson(GetStorage().read('user') ?? {});
+          }
+          else{
+            Get.snackbar('Registro fallido', responseApi.message ?? '');
+
+          }
+
+        });
+      }
+
 
       // Stream stream = await usersProvider.createWithImage(user, imageFile!);
       // stream.listen((res){

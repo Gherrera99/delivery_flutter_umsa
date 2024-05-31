@@ -61,8 +61,10 @@ class RegisterController extends GetxController{
             }
           else{
             Get.snackbar('Registro fallido', responseApi.message ?? '');
+
           }
-        });
+
+      });
     }
   }
 
