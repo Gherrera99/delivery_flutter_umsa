@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:delivery_flutter_app/src/models/category.dart';
 import 'package:delivery_flutter_app/src/pages/restaurant/categories/create/restaurant_categories_create_controller.dart';
 import 'package:delivery_flutter_app/src/pages/restaurant/products/restaurant_products_create_controller.dart';
 import 'package:flutter/material.dart';
@@ -12,14 +13,14 @@ class RestaurantProductsCreatePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack( // POSICIONAR ELEMENTOS UNO DEBAJO DEL OTRO
+      body: Obx(() =>Stack( // POSICIONAR ELEMENTOS UNO DEBAJO DEL OTRO
         children: [
           _backgroundCover(context),
           _boxForm(context),
           _textNewCategory(context),
 
         ],
-      ),
+      )),
     );
   }
 
@@ -55,21 +56,22 @@ class RestaurantProductsCreatePage extends StatelessWidget {
             _textFieldName(),
             _textFieldDescription(),
             _textFieldPrice(),
+            _dropDownCategories(con.categories),
             Container(
               margin: EdgeInsets.only(top: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GetBuilder <RestaurantProductsCreateController>(
-                    builder: (value) => _cardimage(context, con.imageFile1, 1),
+                    builder: (value) => _cardImage(context, con.imageFile1, 1),
                   ),
                   SizedBox(width: 5),
                   GetBuilder <RestaurantProductsCreateController>(
-                    builder: (value) => _cardimage(context, con.imageFile2, 2),
+                    builder: (value) => _cardImage(context, con.imageFile2, 2),
                   ),
                   SizedBox(width: 5),
                   GetBuilder <RestaurantProductsCreateController>(
-                    builder: (value) => _cardimage(context, con.imageFile3, 3),
+                    builder: (value) => _cardImage(context, con.imageFile3, 3),
                   ),
 
                 ],
@@ -83,21 +85,75 @@ class RestaurantProductsCreatePage extends StatelessWidget {
   }
 
 
-  Widget _cardimage(BuildContext context, File? imageFile, int numberFile) {
-    return GestureDetector(
-          onTap: () => con.showAlertDialog(context, numberFile),
-          child: Container(
-              height: 100,
-              width: MediaQuery.of(context).size.width * 0.19,
-              child: imageFile != null
-                  ? Image.file(
-                imageFile,
-                fit: BoxFit.cover,
-              )
-                  :Image(
-                image: AssetImage('assets/img/cover_image.png'),
-              )
+  Widget _dropDownCategories(List<Category> categories) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 50),
+      margin: EdgeInsets.only(top: 15),
+      child: DropdownButton(
+        underline: Container(
+          alignment: Alignment.centerRight,
+          child: Icon(
+            Icons.arrow_drop_down_circle,
+            color: Colors.amber,
           ),
+        ),
+        elevation: 3,
+        isExpanded: true,
+        hint: Text(
+          'Seleccionar categoria',
+          style: TextStyle(
+
+              fontSize: 15
+          ),
+        ),
+        items: _dropDownItems(categories),
+        //value: con.idCategory.value == '' ? null : con.idCategory.value,
+        onChanged: (option) {
+          print('Opcion seleccionada ${option}');
+          con.idCategory = option.toString();
+        },
+      ),
+    );
+  }
+
+
+
+
+
+  List<DropdownMenuItem<String?>> _dropDownItems(List<Category> categories) {
+    List<DropdownMenuItem<String>> list = [];
+    categories.forEach((category) {
+      list.add(DropdownMenuItem(
+        child: Text(category.name ?? ''),
+        value: category.id,
+      ));
+    });
+
+    return list;
+  }
+
+
+
+  Widget _cardImage(BuildContext context, File? imageFile, int numberFile) {
+    return GestureDetector(
+      onTap: () => con.showAlertDialog(context, numberFile),
+      child: Card(
+        elevation: 3,
+        child: Container(
+          padding: EdgeInsets.all(0),
+            height: 100,
+            width: MediaQuery.of(context).size.width * 0.18,
+            color: Colors.white,
+            child: imageFile != null
+                ? Image.file(
+              imageFile,
+              fit: BoxFit.cover,
+            )
+                :Image(
+              image: AssetImage('assets/img/cover_image.png'),
+            )
+        ),
+      ),
     );
   }
 
