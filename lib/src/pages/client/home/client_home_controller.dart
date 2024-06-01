@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-class ClientProductsListController extends GetxController {
+class ClientHomeController extends GetxController {
 
   var indexTab = 0.obs;
 
