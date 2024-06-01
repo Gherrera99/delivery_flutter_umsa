@@ -61,20 +61,20 @@ class _MyAppState extends State<MyApp> {
         GetPage(name: '/client/profile/update', page: () => ClientProfileUpdatePage()),
       ],
       theme: ThemeData(
-        primaryColor: Colors.amber,
-        colorScheme: ColorScheme(
-            primary: Colors.amber,
-            secondary: Colors.amberAccent,
-            brightness: Brightness.light,
-            onBackground: Colors.grey,
-            onPrimary: Colors.grey,
-            surface: Colors.amber,
-            onSurface: Colors.red,
-            error: Colors.grey,
-            onError: Colors.grey,
-            onSecondary: Colors.grey,
-            background: Colors.white
-        )
+          primaryColor: Colors.amber,
+          colorScheme: ColorScheme(
+              primary: Colors.black,
+              secondary: Colors.amberAccent,
+              brightness: Brightness.light,
+              onBackground: Colors.grey,
+              onPrimary: Colors.grey,
+              surface: Colors.amber,
+              onSurface: Colors.red,
+              error: Colors.grey,
+              onError: Colors.grey,
+              onSecondary: Colors.grey,
+              background: Colors.white
+          )
       ),
       navigatorKey: Get.key,
     );
