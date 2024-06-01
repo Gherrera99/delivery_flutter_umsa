@@ -36,6 +36,7 @@ class _MyAppState extends State<MyApp> {
   void initState(){
     //TODO: implement initState
     super.initState();
+    print('EL TOKEN DE SESION DEL USUARIO: ${userSession.sessionToken}');
   }
 
   @override
