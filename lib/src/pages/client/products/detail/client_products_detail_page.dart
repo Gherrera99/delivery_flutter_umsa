@@ -1,21 +1,22 @@
-import 'package:delivery_flutter_app/src/models/product.dart';
-import 'package:delivery_flutter_app/src/pages/client/products/detail/client_products_detail_controller.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:get/get.dart';
+import 'package:delivery_flutter_app/src/models/product.dart';
+import 'package:delivery_flutter_app/src/pages/client/products/detail/client_products_detail_controller.dart';
 
 
 class ClientProductsDetailPage extends StatelessWidget {
 
   Product? product;
-  ClientProductsDetailController con = Get.put(ClientProductsDetailController());
+  late ClientProductsDetailController con;
 
-  ClientProductsDetailPage({@required this.product});
+  ClientProductsDetailPage({@required this.product}){
+    con = Get.put(ClientProductsDetailController(product!));
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Obx(() => Scaffold(
       bottomNavigationBar: Container(
         height: 100,
           child: _buttonAddToBag()
@@ -32,7 +33,7 @@ class ClientProductsDetailPage extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ));
   }
 
   Widget _buttonAddToBag(){
@@ -40,11 +41,11 @@ class ClientProductsDetailPage extends StatelessWidget {
          children: [
            Divider(height: 1, color: Colors.grey[400]),
            Container(
-             margin: EdgeInsets.only(left: 30, right: 28, top: 25),
+             margin: EdgeInsets.only(left: 30, right: 1, top: 25),
              child: Row(
                children: [
                  ElevatedButton(
-                   onPressed: () {},
+                   onPressed: () => con.removeItem(),
                    child: Text('-',
                      style: TextStyle(
                        color: Colors.black,
@@ -53,6 +54,7 @@ class ClientProductsDetailPage extends StatelessWidget {
                    ),
                    style: ElevatedButton.styleFrom(
                        backgroundColor: Colors.white,
+                       minimumSize: Size(45, 37),
                        shape: RoundedRectangleBorder(
                            borderRadius: BorderRadius.only(
                              topLeft: Radius.circular(25),
@@ -64,7 +66,7 @@ class ClientProductsDetailPage extends StatelessWidget {
                  ElevatedButton(
                    onPressed: () {},
                    child: Text(
-                     '0',
+                     '${con.counter.value}',
                      style: TextStyle(
                        color: Colors.black,
                        fontSize: 22,
@@ -72,7 +74,7 @@ class ClientProductsDetailPage extends StatelessWidget {
                    ),
                    style: ElevatedButton.styleFrom(
                      backgroundColor: Colors.white,
-                     minimumSize: Size(40, 40),
+                       minimumSize: Size(45, 37),
                        shape: RoundedRectangleBorder(
                            borderRadius: BorderRadius.only(
                              topRight: Radius.circular(0),
@@ -84,7 +86,7 @@ class ClientProductsDetailPage extends StatelessWidget {
                    ),
                  ),
                  ElevatedButton(
-                   onPressed: () {},
+                   onPressed: () => con.addItem(),
                    child: Text('+',
                      style: TextStyle(
                        color: Colors.black,
@@ -93,6 +95,7 @@ class ClientProductsDetailPage extends StatelessWidget {
                    ),
                    style: ElevatedButton.styleFrom(
                        backgroundColor: Colors.white,
+                       minimumSize: Size(45, 37),
                        shape: RoundedRectangleBorder(
                            borderRadius: BorderRadius.only(
                              topRight: Radius.circular(25),
@@ -103,9 +106,9 @@ class ClientProductsDetailPage extends StatelessWidget {
                  ),
                  Spacer(),
                  ElevatedButton(
-                   onPressed: () {},
+                   onPressed: () => con.addToBag(),
                    child: Text(
-                     'Agregar   ${product?.price ?? ''}',
+                     'Agregar   \$${con.price.value}',
                      style: TextStyle(
                        color: Colors.black,
                        fontSize: 18,
@@ -176,10 +179,7 @@ class ClientProductsDetailPage extends StatelessWidget {
   }
 
   Widget _imageSlideshow(BuildContext context){
-    return SafeArea(
-        child: Stack(
-          children: [
-            ImageSlideshow(
+    return ImageSlideshow(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.4,
                 initialPage: 0,
@@ -211,9 +211,6 @@ class ClientProductsDetailPage extends StatelessWidget {
                           : AssetImage('assets/img/no-image.png') as ImageProvider
                   ),
                 ]
-            )
-          ],
-        )
     );
   }
 }
