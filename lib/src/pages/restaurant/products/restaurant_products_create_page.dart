@@ -207,14 +207,12 @@ class RestaurantProductsCreatePage extends StatelessWidget {
   }
 
 
-
-
   Widget _buttonCreate(BuildContext context) {
     return Container(
       width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
       child: ElevatedButton(
-         onPressed: () => con.createCategory(),
+         onPressed: () => con.createProduct(context),
           style: ElevatedButton.styleFrom(
               padding: EdgeInsets.symmetric(vertical: 15)
           ),
