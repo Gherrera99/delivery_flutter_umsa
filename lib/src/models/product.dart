@@ -28,19 +28,30 @@ class Product {
     this.quantity,
   });
 
+  factory Product.fromJson(Map<String, dynamic> json) {
+    var priceValue = json["price"];
+    double price;
 
+    if (priceValue is String) {
+      price = double.parse(priceValue);
+    } else if (priceValue is double) {
+      price = priceValue;
+    } else {
+      throw Exception('Tipo inesperado para price');
+    }
 
-  factory Product.fromJson(Map<String, dynamic> json) => Product(
-    id: json["id"],
-    name: json["name"],
-    description: json["description"],
-    image1: json["image1"],
-    image2: json["image2"],
-    image3: json["image3"],
-    idCategory: json["id_category"],
-    price: json["price"].toDouble(),
-    quantity: json["quantity"],
-  );
+    return Product(
+      id: json["id"],
+      name: json["name"],
+      description: json["description"],
+      image1: json["image1"],
+      image2: json["image2"],
+      image3: json["image3"],
+      idCategory: json["id_category"],
+      price: price,
+      quantity: json["quantity"],
+    );
+  }
 
   static List<Product> fromJsonList(List<dynamic> jsonList) {
     List<Product> toList = [];
@@ -52,6 +63,7 @@ class Product {
 
     return toList;
   }
+
   Map<String, dynamic> toJson() => {
     "id": id,
     "name": name,

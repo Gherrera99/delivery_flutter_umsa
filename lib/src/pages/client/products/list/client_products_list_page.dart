@@ -16,17 +16,17 @@ class ClientProductsListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return DefaultTabController(
+    return Obx(() => DefaultTabController(
       length: con.categories.length,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(100),
+          preferredSize: Size.fromHeight(70),
           child: AppBar(
             bottom: TabBar(
               isScrollable: true,
               indicatorColor: Colors.amber,
               labelColor: Colors.black,
-              unselectedLabelColor: Colors.grey[400],
+              unselectedLabelColor: Colors.grey[600],
               tabs: List<Widget>.generate(con.categories.length, (index) {
                 return Tab(
                   child: Text(con.categories[index].name ?? ''),
@@ -56,19 +56,41 @@ class ClientProductsListPage extends StatelessWidget {
           }).toList(),
         )
       ),
-    );
+    ));
   }
 
 Widget _cardProduct(Product product){
-    return ListTile(
-      title:  Text(product.description ?? ''),
-      leading: FadeInImage(
-        image: product.image1 != null
-            ? NetworkImage(product.image1!)
-            : AssetImage('assets/img/no-image.png') as ImageProvider,
-        fit: BoxFit.cover,
-        fadeInDuration: Duration(milliseconds: 50),
-        placeholder:  AssetImage('assets/img/no-image.png'),
+    return Container(
+      margin: EdgeInsets.only(top: 15, left: 20, right: 20),
+      child: ListTile(
+        title:  Text(product.name ?? ''),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 5,),
+            Text(product.description ?? ''),
+            SizedBox(height: 10,),
+            Text(
+              product.price.toString(),
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold
+              ),
+            )
+          ],
+        ),
+        trailing: Container(
+          height: 70,
+          width: 70,
+          child: FadeInImage(
+            image: product.image1 != null
+                ? NetworkImage(product.image1!)
+                : AssetImage('assets/img/no-image.png') as ImageProvider,
+            fit: BoxFit.cover,
+            fadeInDuration: Duration(milliseconds: 50),
+            placeholder:  AssetImage('assets/img/no-image.png'),
+          ),
+        ),
       ),
     );
   }
