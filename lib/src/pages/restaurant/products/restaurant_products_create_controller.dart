@@ -25,7 +25,7 @@ class RestaurantProductsCreateController extends GetxController{
   File? imageFile2;
   File? imageFile3;
 
-  String? idCategory;
+  var idCategory = ''.obs;
   List<Category> categories = <Category>[].obs;
   ProductsProvider productsProvider = ProductsProvider();
 
@@ -56,7 +56,7 @@ class RestaurantProductsCreateController extends GetxController{
           name: name,
           description: description,
           price: double.parse(price),
-          idCategory: idCategory
+          idCategory: idCategory.value
       );
       progressDialog.show(max: 100, msg: 'Espere un momento...');
 
@@ -94,7 +94,7 @@ class RestaurantProductsCreateController extends GetxController{
       Get.snackbar('Fomulario no valido', 'Ingresa el precio del producto');
       return false;
     }
-    if (idCategory == null) {
+    if (idCategory.value == '') {
       Get.snackbar('Fomulario no valido', 'Debes seleccionar la categoria del producto');
       return false;
     }
@@ -185,6 +185,12 @@ class RestaurantProductsCreateController extends GetxController{
   void clearForm() {
     nameController.text = '';
     descriptionController.text = '';
+    priceController.text = '';
+    imageFile1 = null;
+    imageFile2 = null;
+    imageFile3 = null;
+    idCategory.value = '';
+    update();
   }
 
 }
