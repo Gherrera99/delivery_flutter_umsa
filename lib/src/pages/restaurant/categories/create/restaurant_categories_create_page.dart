@@ -32,7 +32,7 @@ class RestaurantCategoriesCreatePage extends StatelessWidget {
 
   Widget _boxForm(BuildContext context){
     return Container(
-      height: MediaQuery.of(context).size.height * 0.4,
+      height: MediaQuery.of(context).size.height * 0.45,
       margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.3, left: 50, right: 50),
       decoration: BoxDecoration(
           color: Colors.white,
@@ -119,7 +119,7 @@ class RestaurantCategoriesCreatePage extends StatelessWidget {
 
     return SafeArea(
       child: Container(
-        margin: EdgeInsets.only(top:125),
+        margin: EdgeInsets.only(top:70),
         alignment: Alignment.topCenter,
         child: Column(
           children: [
