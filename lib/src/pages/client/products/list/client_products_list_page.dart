@@ -5,6 +5,7 @@ import 'package:delivery_flutter_app/src/pages/client/profile/info/client_profil
 import 'package:delivery_flutter_app/src/pages/delivery/orders/list/delivery_orders_list_page.dart';
 import 'package:delivery_flutter_app/src/pages/restaurant/orders/list/restaurant_orders_list_page.dart';
 import 'package:delivery_flutter_app/src/utils/custom_animated_bottom_bar.dart';
+import 'package:delivery_flutter_app/src/widget/no_data_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -41,15 +42,22 @@ class ClientProductsListPage extends StatelessWidget {
                 future: con.getProducts(category.id ?? '1'),
                 builder: (context, AsyncSnapshot<List<Product>> snapshot){
                   if(snapshot.hasData){
-                    return ListView.builder(
-                      itemCount: snapshot.data?.length ?? 0,
-                        itemBuilder: (_, index){
-                        return _cardProduct(snapshot.data![index]);
+
+                    if(snapshot.data!.length > 0){
+                      return ListView.builder(
+                          itemCount: snapshot.data?.length ?? 0,
+                          itemBuilder: (_, index){
+                            return _cardProduct(snapshot.data![index]);
+                          }
+                      );
                     }
-                    );
+                    else{
+                      return NoDataWidget(text: 'No hay productos disponibles',);
+                    }
+
                   }
                   else{
-                    return Container();
+                    return NoDataWidget(text: 'No hay productos disponibles',);
                   }
                 }
             );
@@ -60,38 +68,54 @@ class ClientProductsListPage extends StatelessWidget {
   }
 
 Widget _cardProduct(Product product){
-    return Container(
-      margin: EdgeInsets.only(top: 15, left: 20, right: 20),
-      child: ListTile(
-        title:  Text(product.name ?? ''),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 5,),
-            Text(product.description ?? ''),
-            SizedBox(height: 10,),
-            Text(
-              product.price.toString(),
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 15, left: 20, right: 20),
+          child: ListTile(
+            title:  Text(product.name ?? ''),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 5,),
+                Text(
+                    product.description ?? '',
+                  maxLines: 2,
+                  style: TextStyle(
+                    fontSize: 13,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  '\$${product.price.toString()}',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold
+                  ),
+                ),
+                SizedBox(height: 20),
+
+              ],
+            ),
+            trailing: Container(
+              height: 80,
+              width: 80,
+              child: ClipRRect(
+                borderRadius:BorderRadius.circular(12),
+                child: FadeInImage(
+                  image: product.image1 != null
+                      ? NetworkImage(product.image1!)
+                      : AssetImage('assets/img/no-image.png') as ImageProvider,
+                  fit: BoxFit.cover,
+                  fadeInDuration: Duration(milliseconds: 50),
+                  placeholder:  AssetImage('assets/img/no-image.png'),
+                ),
               ),
-            )
-          ],
-        ),
-        trailing: Container(
-          height: 70,
-          width: 70,
-          child: FadeInImage(
-            image: product.image1 != null
-                ? NetworkImage(product.image1!)
-                : AssetImage('assets/img/no-image.png') as ImageProvider,
-            fit: BoxFit.cover,
-            fadeInDuration: Duration(milliseconds: 50),
-            placeholder:  AssetImage('assets/img/no-image.png'),
+            ),
           ),
         ),
-      ),
+        Divider(height: 1, color: Colors.grey[300], indent: 37,endIndent: 37,)
+      ],
     );
   }
 
