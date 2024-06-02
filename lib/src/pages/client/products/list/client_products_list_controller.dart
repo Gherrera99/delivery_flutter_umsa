@@ -32,7 +32,7 @@ Future<List<Product>> getProducts(String idCategory) async {
   void openBottomSheet(BuildContext context,Product product){
   showBarModalBottomSheet(
     context: context,
-    builder: (contex) => ClientProductsDetailPage()
+    builder: (contex) => ClientProductsDetailPage(product: product)
     );
 
   }
