@@ -13,7 +13,7 @@ class ClientOrdersCreatePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Obx(() => Scaffold(
       bottomNavigationBar: Container(
         color: Color.fromRGBO(245, 245, 245, 1),
         height: 100,
@@ -36,8 +36,11 @@ class ClientOrdersCreatePage extends StatelessWidget {
           return _cardProduct(product);
         }).toList(),
       )
-      : NoDataWidget(text: 'No hay ningún producto agregado aún'),
-    );
+      : Center(
+        child:
+          NoDataWidget(text: 'No hay ningún producto agregado aún')
+    )
+    ));
   }
 
   Widget _totalToPay(BuildContext context) {
@@ -50,7 +53,7 @@ class ClientOrdersCreatePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                  'TOTAL: \$0.0',
+                  'TOTAL: \$${con.total.value}',
                 style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
@@ -58,8 +61,8 @@ class ClientOrdersCreatePage extends StatelessWidget {
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 30),
-                width: MediaQuery.of(context).size.width * 0.55,
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                width: MediaQuery.of(context).size.width * 0.4,
                 child: ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
@@ -115,7 +118,7 @@ class ClientOrdersCreatePage extends StatelessWidget {
 
   Widget _iconDelete(Product product) {
     return IconButton(
-        onPressed: () {},
+        onPressed: () => con.deleteItem(product),
         icon: Icon(
           Icons.delete,
           color: Colors.red,
@@ -143,7 +146,7 @@ class ClientOrdersCreatePage extends StatelessWidget {
     return Row(
       children: [
         GestureDetector(
-          onTap: () {},
+          onTap: () => con.removeItem(product),
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 12, vertical: 7),
             decoration: BoxDecoration(
@@ -162,9 +165,10 @@ class ClientOrdersCreatePage extends StatelessWidget {
           child: Text('${product.quantity ?? 0}'),
         ),
         GestureDetector(
-          onTap: () {},
+          onTap: () => con.addItem(product),
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+
             decoration: BoxDecoration(
                 color: Colors.grey[200],
                 borderRadius: BorderRadius.only(
