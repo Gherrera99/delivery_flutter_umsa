@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -39,6 +40,18 @@ class ClientAddressMapController extends GetxController {
       addressName.value = '$direction #$street, $city, $department';
       addressLatLng = LatLng(lat, lng);
       print('LAT Y LNG: ${addressLatLng?.latitude ?? 0} ${addressLatLng?.longitude ?? 0}');
+    }
+
+  }
+
+  void selectRefPoint(BuildContext context) {
+    if (addressLatLng != null) {
+      Map<String, dynamic> data = {
+        'address': addressName.value,
+        'lat': addressLatLng!.latitude,
+        'lng': addressLatLng!.longitude,
+      };
+      Navigator.pop(context, data);
     }
 
   }

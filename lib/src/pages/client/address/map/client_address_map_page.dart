@@ -28,19 +28,19 @@ class ClientAddressMapPage extends StatelessWidget {
           _googleMaps(),
           _iconMyLocation(),
           _cardAddress(),
-          _buttonAccept(),
+          _buttonAccept(context),
         ],
       ),
     ));
   }
 
-  Widget _buttonAccept(){
+  Widget _buttonAccept(BuildContext context){
     return Container(
       alignment: Alignment.bottomCenter,
       margin: EdgeInsets.only(bottom: 30),
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () => con.selectRefPoint(context),
         child: Text('SELECCIONAR ESTE PUNTO',
           style: TextStyle(
             color: Colors.black
