@@ -29,6 +29,10 @@ Future<List<Product>> getProducts(String idCategory) async {
     return await productsProvider.findByCategory(idCategory);
 }
 
+void goToOrderCreate(){
+    Get.toNamed('/client/orders/create');
+}
+
   void openBottomSheet(BuildContext context,Product product){
   showBarModalBottomSheet(
     context: context,

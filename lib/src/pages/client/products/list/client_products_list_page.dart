@@ -84,7 +84,7 @@ class ClientProductsListPage extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.only(left: 10),
         child: IconButton(
-          onPressed: () {},
+          onPressed: () => con.goToOrderCreate(),
           icon: Icon(
             Icons.shopping_bag_outlined,
             size: 35,
