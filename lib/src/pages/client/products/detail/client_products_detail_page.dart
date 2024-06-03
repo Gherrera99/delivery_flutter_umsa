@@ -9,13 +9,18 @@ class ClientProductsDetailPage extends StatelessWidget {
 
   Product? product;
   late ClientProductsDetailController con;
+  var counter = 0.obs;
+  var price = 0.0.obs;
 
   ClientProductsDetailPage({@required this.product}){
-    con = Get.put(ClientProductsDetailController(product!));
+    con = Get.put(ClientProductsDetailController());
   }
 
   @override
   Widget build(BuildContext context) {
+
+    con.checkIfProductsWasAdded(product!, price, counter);
+
     return Obx(() => Scaffold(
       bottomNavigationBar: Container(
         height: 100,
@@ -45,7 +50,7 @@ class ClientProductsDetailPage extends StatelessWidget {
              child: Row(
                children: [
                  ElevatedButton(
-                   onPressed: () => con.removeItem(),
+                   onPressed: () => con.removeItem(product!, price, counter),
                    child: Text('-',
                      style: TextStyle(
                        color: Colors.black,
@@ -66,7 +71,7 @@ class ClientProductsDetailPage extends StatelessWidget {
                  ElevatedButton(
                    onPressed: () {},
                    child: Text(
-                     '${con.counter.value}',
+                     '${counter.value}',
                      style: TextStyle(
                        color: Colors.black,
                        fontSize: 22,
@@ -86,7 +91,7 @@ class ClientProductsDetailPage extends StatelessWidget {
                    ),
                  ),
                  ElevatedButton(
-                   onPressed: () => con.addItem(),
+                   onPressed: () => con.addItem(product!, price, counter),
                    child: Text('+',
                      style: TextStyle(
                        color: Colors.black,
@@ -106,9 +111,9 @@ class ClientProductsDetailPage extends StatelessWidget {
                  ),
                  Spacer(),
                  ElevatedButton(
-                   onPressed: () => con.addToBag(),
+                   onPressed: () => con.addToBag(product!, price, counter),
                    child: Text(
-                     'Agregar   \$${con.price.value}',
+                     'Agregar   \$${price.value}',
                      style: TextStyle(
                        color: Colors.black,
                        fontSize: 18,
