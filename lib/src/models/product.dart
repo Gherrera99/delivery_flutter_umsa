@@ -5,7 +5,6 @@ Product productFromJson(String str) => Product.fromJson(json.decode(str));
 String productToJson(Product data) => json.encode(data.toJson());
 
 class Product {
-
   String? id;
   String? name;
   String? description;
@@ -34,6 +33,8 @@ class Product {
 
     if (priceValue is String) {
       price = double.parse(priceValue);
+    } else if (priceValue is int) {
+      price = priceValue.toDouble();
     } else if (priceValue is double) {
       price = priceValue;
     } else {
