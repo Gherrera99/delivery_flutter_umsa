@@ -134,11 +134,6 @@ class ClientProductsDetailPage extends StatelessWidget {
        );
   }
 
-
-
-
-
-
   Widget _textPriceProduct() {
     return Container(
       alignment: Alignment.centerLeft,

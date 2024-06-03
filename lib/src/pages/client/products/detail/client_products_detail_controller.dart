@@ -5,13 +5,7 @@ import 'package:get_storage/get_storage.dart';
 
 class ClientProductsDetailController extends GetxController{
 
-
-
   List<Product> selectedProducts = [];
-
-  ClientProductsDetailController(){
-
-  }
 
   void checkIfProductsWasAdded(Product product, var price, var counter) {
     price.value = product.price ?? 0.0;
