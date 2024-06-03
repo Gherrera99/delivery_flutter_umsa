@@ -136,7 +136,14 @@ class ClientProductsListPage extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(top: 15, left: 20, right: 20),
             child: ListTile(
-              title:  Text(product.name ?? ''),
+              title:  Text(
+                  product.name ?? '',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17
+                ),
+              ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -145,7 +152,8 @@ class ClientProductsListPage extends StatelessWidget {
                       product.description ?? '',
                     maxLines: 2,
                     style: TextStyle(
-                      fontSize: 13,
+                      fontSize: 14.5,
+                      color: Colors.grey[600]
                     ),
                   ),
                   SizedBox(height: 10),
@@ -153,7 +161,8 @@ class ClientProductsListPage extends StatelessWidget {
                     '\$${product.price.toString()}',
                     style: TextStyle(
                       color: Colors.black,
-                      fontWeight: FontWeight.bold
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16
                     ),
                   ),
                   SizedBox(height: 20),
@@ -161,7 +170,7 @@ class ClientProductsListPage extends StatelessWidget {
                 ],
               ),
               trailing: Container(
-                height: 80,
+                height: 90,
                 width: 80,
                 child: ClipRRect(
                   borderRadius:BorderRadius.circular(12),
