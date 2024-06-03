@@ -20,9 +20,21 @@ class ClientProductsListPage extends StatelessWidget {
     return Obx(() => DefaultTabController(
       length: con.categories.length,
       child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(70),
-          child: AppBar(
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(120),
+            child: AppBar(
+              flexibleSpace: Container(
+                margin: EdgeInsets.only(top: 15),
+                alignment: Alignment.topCenter,
+                child: Wrap(
+                  direction: Axis.horizontal,
+                  children: [
+                    _textFieldSearch(context),
+                    _iconShoppingBag()
+
+                  ],
+                ),
+              ),
             bottom: TabBar(
               isScrollable: true,
               indicatorColor: Colors.amber,
@@ -67,7 +79,56 @@ class ClientProductsListPage extends StatelessWidget {
     ));
   }
 
-Widget _cardProduct(BuildContext context, Product product){
+  Widget _iconShoppingBag() {
+    return SafeArea(
+      child: Container(
+        margin: EdgeInsets.only(left: 10),
+        child: IconButton(
+          onPressed: () {},
+          icon: Icon(
+            Icons.shopping_bag_outlined,
+            size: 35,
+            color: Colors.black,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _textFieldSearch(BuildContext context) {
+    return SafeArea(
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.75,
+        child: TextField(
+          decoration: InputDecoration(
+              hintText: 'Buscar producto',
+              suffixIcon: Icon(Icons.search, color: Colors.grey),
+              hintStyle: TextStyle(
+                  fontSize: 17,
+                  color: Colors.grey
+              ),
+              fillColor: Colors.white,
+              filled: true,
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide: BorderSide(
+                      color: Colors.grey
+                  )
+              ),
+              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide: BorderSide(
+                      color: Colors.grey
+                  )
+              ),
+              contentPadding: EdgeInsets.all(15)
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _cardProduct(BuildContext context, Product product){
     return GestureDetector(
       onTap: () => con.openBottomSheet(context, product),
       child: Column(

@@ -9,14 +9,20 @@ class ClientProfileInfoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Obx(() => Stack( // POSICIONAR ELEMENTOS UNO DEBAJO DEL OTRO
-        children: [
-          _backgroundCover(context),
-          _boxForm(context),
-          _imageUser(context),
-          _buttonSignOut()
-        ],
-      )),
+      body: Obx(() =>
+          Stack( // POSICIONAR ELEMENTOS UNO DEBAJO DEL OTRO
+            children: [
+              _backgroundCover(context),
+              _boxForm(context),
+              _imageUser(context),
+              Column(
+                children: [
+                  _buttonSignOut(),
+                  _buttonRoles(),
+                ],
+              ),
+            ],
+          )),
     );
   }
 
@@ -70,6 +76,21 @@ class ClientProfileInfoPage extends StatelessWidget {
             ),
           ),
         )
+    );
+  }
+
+  Widget _buttonRoles() {
+    return Container(
+      margin: EdgeInsets.only(right: 30),
+      alignment: Alignment.topRight,
+      child: IconButton(
+        onPressed: () => con.goToRoles(),
+        icon: Icon(
+          Icons.supervised_user_circle,
+          color: Colors.white,
+          size: 30,
+        ),
+      ),
     );
   }
 
