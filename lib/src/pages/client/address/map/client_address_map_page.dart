@@ -11,7 +11,7 @@ class ClientAddressMapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Obx (() => Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
             color: Colors.black
@@ -31,7 +31,7 @@ class ClientAddressMapPage extends StatelessWidget {
           _buttonAccept(),
         ],
       ),
-    );
+    ));
   }
 
   Widget _buttonAccept(){
@@ -70,7 +70,7 @@ class ClientAddressMapPage extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Text(
-            'Name address',
+            con.addressName.value,
             style: TextStyle(
               color: Colors.white,
               fontSize: 14,
@@ -104,6 +104,9 @@ class ClientAddressMapPage extends StatelessWidget {
       myLocationEnabled: false,
       onCameraMove: (position) {
         con.initialPosition = position;
+      },
+    onCameraIdle: () async {
+    await con.setLocationDraggableInfo(); // EMPEZAR A OBTNER LA LAT Y LNG DE LA POSICION CENTRAL DEL MAPA},
       },
     );
   }
