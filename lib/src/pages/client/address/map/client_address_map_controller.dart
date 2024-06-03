@@ -14,6 +14,7 @@ class ClientAddressMapController extends GetxController {
 
 
   void onMapCreate(GoogleMapController controller) {
+    controller.setMapStyle('');
     mapController.complete(controller);
   }
 
