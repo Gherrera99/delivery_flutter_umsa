@@ -19,13 +19,13 @@ class RestaurantOrdersDetailPage extends StatelessWidget {
         height: con.order.status == 'PAGADO'
             ? MediaQuery.of(context).size.height * 0.50
             : MediaQuery.of(context).size.height * 0.45,
-        // padding: EdgeInsets.only(top: 5),
+        padding: EdgeInsets.only(top: 5),
         child: Column(
           children: [
             _dataDate(),
             _dataClient(),
             _dataAddress(),
-            // _dataDelivery(),
+            _dataDelivery(),
             _totalToPay(context),
           ],
         ),
@@ -55,31 +55,43 @@ class RestaurantOrdersDetailPage extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20),
       child: ListTile(
-        title: Text('Cliente y Telefono'),
+        title: Text('Cliente y Telefono',
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 17
+          ),),
         subtitle: Text('${con.order.client?.name ?? ''} ${con.order.client?.lastname ?? ''} - ${con.order.client?.phone ?? ''}'),
         trailing: Icon(Icons.person),
       ),
     );
   }
 
-  // Widget _dataDelivery() {
-  //   return con.order.status != 'PAGADO'
-  //       ? Container(
-  //     margin: EdgeInsets.symmetric(horizontal: 20),
-  //     child: ListTile(
-  //       title: Text('Repartidor asignado'),
-  //       subtitle: Text('${con.order.delivery?.name ?? ''} ${con.order.delivery?.lastname ?? ''} - ${con.order.delivery?.phone ?? ''}'),
-  //       trailing: Icon(Icons.delivery_dining),
-  //     ),
-  //   )
-  //       : Container();
-  // }
+  Widget _dataDelivery() {
+    return con.order.status != 'PAGADO'
+        ? Container(
+      margin: EdgeInsets.symmetric(horizontal: 20),
+      child: ListTile(
+        title: Text('Repartidor asignado',
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 17,
+          ),),
+        subtitle: Text('${con.order.delivery?.name ?? ''} ${con.order.delivery?.lastname ?? ''} - ${con.order.delivery?.phone ?? ''}'),
+        trailing: Icon(Icons.delivery_dining),
+      ),
+    )
+        : Container();
+  }
 
   Widget _dataAddress() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20),
       child: ListTile(
-        title: Text('Direccion de entrega'),
+        title: Text('Direccion de entrega',
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 17
+          ),),
         subtitle: Text(con.order.address?.address ?? ''),
         trailing: Icon(Icons.location_on),
       ),
@@ -90,7 +102,12 @@ class RestaurantOrdersDetailPage extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20),
       child: ListTile(
-        title: Text('Fecha del pedido'),
+        title: Text('Fecha del pedido',
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 17
+          ),
+        ),
         subtitle: Text('${RelativeTimeUtil.getRelativeTime(con.order.timestamp ?? 0)}'),
         trailing: Icon(Icons.timer),
       ),
@@ -117,7 +134,7 @@ class RestaurantOrdersDetailPage extends StatelessWidget {
               Text(
                 'Cantidad: ${product.quantity}',
                 style: TextStyle(
-                  // fontWeight: FontWeight.bold
+                  // fontWeight: FontWeight.bold,
                     fontSize: 13
                 ),
               ),

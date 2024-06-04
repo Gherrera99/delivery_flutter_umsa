@@ -22,7 +22,7 @@ class Order {
   int? timestamp;
   List<Product>? products = [];
   User? client;
-  // User? delivery;
+  User? delivery;
   Address? address;
 
   Order({
@@ -37,7 +37,7 @@ class Order {
     this.products,
     this.address,
     this.client,
-    // this.delivery
+    this.delivery
   });
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
@@ -51,7 +51,7 @@ class Order {
     lng: json["lng"],
     timestamp: json["timestamp"],
     client: json['client'] is String ? userFromJson(json['client']) : json['client'] is User ? json['client'] : User.fromJson(json['client'] ?? {}),
-    // delivery: json['delivery'] is String ? userFromJson(json['delivery']) : json['delivery'] is User ? json['delivery'] : User.fromJson(json['delivery'] ?? {}),
+    delivery: json['delivery'] is String ? userFromJson(json['delivery']) : json['delivery'] is User ? json['delivery'] : User.fromJson(json['delivery'] ?? {}),
     address: json['address'] is String ? addressFromJson(json['address']) : json['address'] is Address ? json['address'] : Address.fromJson(json['address'] ?? {}),
   );
 
@@ -77,7 +77,7 @@ class Order {
     "timestamp": timestamp,
     "products": products,
     "client": client,
-    // "delivery": delivery,
+    "delivery": delivery,
     "address": address,
   };
 }
