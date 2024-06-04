@@ -1,5 +1,6 @@
 import 'package:delivery_flutter_app/src/models/order.dart';
 import 'package:delivery_flutter_app/src/pages/restaurant/orders/list/restaurant_orders_list_controller.dart';
+import 'package:delivery_flutter_app/src/utils/relative_time_util.dart';
 import 'package:delivery_flutter_app/src/widget/no_data_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -96,34 +97,49 @@ class RestaurantOrdersListPage extends StatelessWidget {
                   ),
                 ),
               ),
-              // Container(
-              //   margin: EdgeInsets.only(top: 15, left: 20, right: 20),
-              //   child: Column(
-              //     mainAxisAlignment: MainAxisAlignment.center,
-              //     children: [
-              //       Container(
-              //           width: double.infinity,
-              //           margin: EdgeInsets.only(top: 5),
-              //           alignment: Alignment.centerLeft,
-              //           child: Text('Pedido: ${ RelativeTimeUtil.getRelativeTime(order.timestamp ?? 0)}')
-              //       ),
-              //       Container(
-              //         width: double.infinity,
-              //         margin: EdgeInsets.only(top: 5),
-              //         alignment: Alignment.centerLeft,
-              //         child: Text('Cliente: ${order.client?.name ?? ''} ${order.client?.lastname ?? ''}'),
-              //       ),
-              //       Container(
-              //         width: double.infinity,
-              //         margin: EdgeInsets.only(top: 5),
-              //         alignment: Alignment.centerLeft,
-              //         child: Text('Entregar en: ${order.address?.address ?? ''}'),
-              //       ),
-              //
-              //
-              //     ],
-              //   ),
-              // ),
+              Container(
+                margin: EdgeInsets.only(top: 15, left: 20, right: 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                        width: double.infinity,
+                        margin: EdgeInsets.only(top: 5),
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Pedido: ${ RelativeTimeUtil.getRelativeTime(order.timestamp ?? 0)}',
+                          style: TextStyle(
+                            color: Colors.black
+                          ),
+                        )
+                    ),
+                    Container(
+                      width: double.infinity,
+                      margin: EdgeInsets.only(top: 5),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Cliente: ${order.client?.name ?? ''} ${order.client?.lastname ?? ''}',
+                        style: TextStyle(
+                            color: Colors.black
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: double.infinity,
+                      margin: EdgeInsets.only(top: 5),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Entregar en: ${order.address?.address ?? ''}',
+                        style: TextStyle(
+                            color: Colors.black
+                        ),
+                      ),
+                    ),
+
+
+                  ],
+                ),
+              ),
             ],
           ),
         ),
