@@ -160,12 +160,12 @@ class RestaurantOrdersDetailPage extends StatelessWidget {
             'ASIGNAR REPARTIDOR',
             style: TextStyle(
                 fontStyle: FontStyle.italic,
-                color: Colors.amber
+                color: Colors.black
             ),
           ),
         )
             : Container(),
-        // con.order.status == 'PAGADO' ? _dropDownDeliveryMen(con.users) : Container(),
+        con.order.status == 'PAGADO' ? _dropDownDeliveryMen(con.users) : Container(),
         Container(
           margin: EdgeInsets.only(left: con.order.status == 'PAGADO' ? 30 : 37, top: 15),
           child: Row(
@@ -206,36 +206,36 @@ class RestaurantOrdersDetailPage extends StatelessWidget {
     );
   }
 
-  // Widget _dropDownDeliveryMen(List<User> users) {
-  //   return Container(
-  //     padding: EdgeInsets.symmetric(horizontal: 35),
-  //     margin: EdgeInsets.only(top: 15),
-  //     child: DropdownButton(
-  //       underline: Container(
-  //         alignment: Alignment.centerRight,
-  //         child: Icon(
-  //           Icons.arrow_drop_down_circle,
-  //           color: Colors.amber,
-  //         ),
-  //       ),
-  //       elevation: 3,
-  //       isExpanded: true,
-  //       hint: Text(
-  //         'Seleccionar repartidor',
-  //         style: TextStyle(
-  //
-  //             fontSize: 15
-  //         ),
-  //       ),
-  //       items: _dropDownItems(users),
-  //       value: con.idDelivery.value == '' ? null : con.idDelivery.value,
-  //       onChanged: (option) {
-  //         print('Opcion seleccionada ${option}');
-  //         con.idDelivery.value = option.toString();
-  //       },
-  //     ),
-  //   );
-  // }
+  Widget _dropDownDeliveryMen(List<User> users) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 35),
+      margin: EdgeInsets.only(top: 15),
+      child: DropdownButton(
+        underline: Container(
+          alignment: Alignment.centerRight,
+          child: Icon(
+            Icons.arrow_drop_down_circle,
+            color: Colors.amber,
+          ),
+        ),
+        elevation: 3,
+        isExpanded: true,
+        hint: Text(
+          'Seleccionar repartidor',
+          style: TextStyle(
+
+              fontSize: 15
+          ),
+        ),
+        items: _dropDownItems(users),
+        value: con.idDelivery.value == '' ? null : con.idDelivery.value,
+        onChanged: (option) {
+          print('Opcion seleccionada ${option}');
+          con.idDelivery.value = option.toString();
+        },
+      ),
+    );
+  }
 
   List<DropdownMenuItem<String>> _dropDownItems(List<User> users) {
     List<DropdownMenuItem<String>> list = [];

@@ -11,15 +11,15 @@ class RestaurantOrdersDetailController extends GetxController {
   Order order = Order.fromJson(Get.arguments['order']);
 
   var total = 0.0.obs;
-  // var idDelivery = ''.obs;
+  var idDelivery = ''.obs;
 
   UsersProvider usersProvider = UsersProvider();
-  OrdersProvider ordersProvider = OrdersProvider();
+  // OrdersProvider ordersProvider = OrdersProvider();
   List<User> users = <User>[].obs;
 
   RestaurantOrdersDetailController() {
     print('Order: ${order.toJson()}');
-    // getDeliveryMen();
+    getDeliveryMen();
     getTotal();
   }
 
@@ -37,11 +37,11 @@ class RestaurantOrdersDetailController extends GetxController {
   //   }
   // }
   //
-  // void getDeliveryMen() async {
-  //   var result = await usersProvider.findDeliveryMen();
-  //   users.clear();
-  //   users.addAll(result);
-  // }
+  void getDeliveryMen() async {
+    var result = await usersProvider.findDeliveryMen();
+    users.clear();
+    users.addAll(result);
+  }
 
   void getTotal() {
     total.value = 0.0;
