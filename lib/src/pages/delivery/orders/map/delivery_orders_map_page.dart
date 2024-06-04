@@ -1,8 +1,5 @@
-import 'package:delivery_flutter_app/src/pages/client/address/map/client_address_map_controller.dart';
 import 'package:delivery_flutter_app/src/pages/delivery/orders/map/delivery_orders_map_controller.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -50,37 +47,12 @@ class DeliveryOrdersMapPage extends StatelessWidget {
         onPressed: () => Get.back(),
         icon: Icon(
           Icons.arrow_back_ios,
-          color: Colors.black,
+          color: Colors.white,
           size: 30,
         ),
       ),
     );
   }
-
-  Widget _buttonAccept(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      margin: EdgeInsets.only(left: 30, right: 30),
-      child: ElevatedButton(
-        onPressed: () => con.selectRefPoint(context),
-        child: Text(
-          'ENTREGAR PEDIDO',
-          style: TextStyle(
-              color: Colors.black
-          ),
-        ),
-        style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15)
-            ),
-            padding: EdgeInsets.all(15)
-        ),
-
-      ),
-    );
-  }
-
-
 
   Widget _cardOrderInfo(BuildContext context) {
     return Container(
@@ -121,55 +93,6 @@ class DeliveryOrdersMapPage extends StatelessWidget {
     );
   }
 
-
-  Widget _listTileAddress(String title, String subtitle, IconData iconData) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20),
-      child: ListTile(
-        title: Text(
-          title,
-          style: TextStyle(
-              fontSize: 13,
-              color: Colors.white
-          ),
-        ),
-        subtitle: Text(
-          subtitle,
-          style: TextStyle(
-              color: Colors.white
-          ),
-        ),
-        trailing: Icon(iconData, color: Colors.white,),
-      ),
-    );
-  }
-
-
-  Widget _iconCenterMyLocation() {
-    return GestureDetector(
-      //con.centerPosition()
-      onTap: () => con.centerPosition(),
-      child: Container(
-        alignment: Alignment.centerRight,
-        margin: EdgeInsets.symmetric(horizontal: 5),
-        child: Card(
-          shape: CircleBorder(),
-          color: Colors.white,
-          elevation: 4,
-          child: Container(
-            padding: EdgeInsets.all(10),
-            child: Icon(
-              Icons.location_searching,
-              color: Colors.grey[600],
-              size: 20,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-
   Widget _clientInfo() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 35, vertical: 20),
@@ -193,10 +116,8 @@ class DeliveryOrdersMapPage extends StatelessWidget {
                 color: Colors.grey[200]
             ),
             child: IconButton(
-
               onPressed: () => con.callNumber(),
               icon: Icon(Icons.phone, color: Colors.black),
-
             ),
           )
         ],
@@ -223,13 +144,79 @@ class DeliveryOrdersMapPage extends StatelessWidget {
     );
   }
 
+  Widget _listTileAddress(String title, String subtitle, IconData iconData) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20),
+      child: ListTile(
+        title: Text(
+          title,
+          style: TextStyle(
+              fontSize: 13,
+              color: Colors.white
+          ),
+        ),
+        subtitle: Text(
+          subtitle,
+          style: TextStyle(
+              color: Colors.white
+          ),
+        ),
+        trailing: Icon(iconData, color: Colors.white,),
+      ),
+    );
+  }
 
+  Widget _iconCenterMyLocation() {
+    return GestureDetector(
+      onTap: () => con.centerPosition(),
+      child: Container(
+        alignment: Alignment.centerRight,
+        margin: EdgeInsets.symmetric(horizontal: 5),
+        child: Card(
+          shape: CircleBorder(),
+          color: Colors.white,
+          elevation: 4,
+          child: Container(
+            padding: EdgeInsets.all(10),
+            child: Icon(
+              Icons.location_searching,
+              color: Colors.grey[600],
+              size: 20,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buttonAccept(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.only(left: 30, right: 30),
+      child: ElevatedButton(
+        onPressed: con.isClose == true ? () => con.updateToDelivered() : null,
+        child: Text(
+          'ENTREGAR PEDIDO',
+          style: TextStyle(
+              color: Colors.black
+          ),
+        ),
+        style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15)
+            ),
+            padding: EdgeInsets.all(15)
+        ),
+
+      ),
+    );
+  }
 
 
   Widget _googleMaps() {
     return GoogleMap(
       initialCameraPosition: con.initialPosition,
-      mapType: MapType.terrain,
+      mapType: MapType.normal,
       onMapCreated: con.onMapCreate,
       myLocationButtonEnabled: false,
       myLocationEnabled: false,
