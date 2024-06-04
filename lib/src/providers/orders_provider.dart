@@ -49,7 +49,7 @@ class OrdersProvider extends GetConnect {
 
     return orders;
   }
-  //
+
   Future<List<Order>> findByClientAndStatus(String idClient, String status) async {
     Response response = await get(
         '$url/findByClientAndStatus/$idClient/$status',

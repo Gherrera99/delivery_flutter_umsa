@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:delivery_flutter_app/src/environment/environment.dart';
 import 'package:delivery_flutter_app/src/models/order.dart';
+import 'package:delivery_flutter_app/src/models/response_api.dart';
 import 'package:delivery_flutter_app/src/providers/orders_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -25,7 +27,7 @@ class DeliveryOrdersMapController extends GetxController {
   OrdersProvider ordersProvider = OrdersProvider();
 
   CameraPosition initialPosition = CameraPosition(
-      target: LatLng(20.9690198, -89.6335752),
+      target: LatLng(1.2004567, -77.2787444),
       zoom: 14
   );
 
@@ -44,11 +46,35 @@ class DeliveryOrdersMapController extends GetxController {
   Set<Polyline> polylines = <Polyline>{}.obs;
   List<LatLng> points = [];
 
+  double distanceBetween = 0.0;
+  bool isClose = false;
+
   DeliveryOrdersMapController() {
     print('Order: ${order.toJson()}');
 
     checkGPS(); // VERIFICAR SI EL GPS ESTA ACTIVO
     connectAndListen();
+  }
+
+  void isCloseToDeliveryPosition() {
+
+    if (position != null) {
+      distanceBetween = Geolocator.distanceBetween(
+          position!.latitude,
+          position!.longitude,
+          order.address!.lat!,
+          order.address!.lng!
+      );
+
+      print('distanceBetween ${distanceBetween}');
+
+      if (distanceBetween <= 200 && isClose == false) {
+        isClose = true;
+        update();
+      }
+
+    }
+
   }
 
   void connectAndListen() {
@@ -66,6 +92,12 @@ class DeliveryOrdersMapController extends GetxController {
         'lng': position!.longitude,
       });
     }
+  }
+
+  void emitToDelivered() {
+    socket.emit('delivered', {
+      'id_order': order.id,
+    });
   }
 
   Future setLocationDraggableInfo() async {
@@ -88,18 +120,6 @@ class DeliveryOrdersMapController extends GetxController {
 
   }
 
-  void selectRefPoint(BuildContext context) {
-    if (addressLatLng != null) {
-      Map<String, dynamic> data = {
-        'address': addressName.value,
-        'lat': addressLatLng!.latitude,
-        'lng': addressLatLng!.longitude,
-      };
-      Navigator.pop(context, data);
-    }
-
-  }
-
   Future<BitmapDescriptor> createMarkerFromAssets(String path) async {
     ImageConfiguration configuration = ImageConfiguration();
     BitmapDescriptor descriptor = await BitmapDescriptor.fromAssetImage(
@@ -108,7 +128,6 @@ class DeliveryOrdersMapController extends GetxController {
 
     return descriptor;
   }
-
 
   void addMarker(
       String markerId,
@@ -131,8 +150,6 @@ class DeliveryOrdersMapController extends GetxController {
     update();
   }
 
-
-
   void checkGPS() async {
     deliveryMarker = await createMarkerFromAssets('assets/img/delivery_little.png');
     homeMarker = await createMarkerFromAssets('assets/img/home.png');
@@ -149,7 +166,6 @@ class DeliveryOrdersMapController extends GetxController {
       }
     }
   }
-
 
   Future<void> setPolylines(LatLng from, LatLng to) async {
     PointLatLng pointFrom = PointLatLng(from.latitude, from.longitude);
@@ -175,6 +191,19 @@ class DeliveryOrdersMapController extends GetxController {
     update();
   }
 
+  void updateToDelivered() async {
+    if (distanceBetween <= 200) {
+      ResponseApi responseApi = await ordersProvider.updateToDelivered(order);
+      Fluttertoast.showToast(msg: responseApi.message ?? '', toastLength: Toast.LENGTH_LONG);
+      if (responseApi.success == true) {
+        emitToDelivered();
+        Get.offNamedUntil('/delivery/home', (route) => false);
+      }
+    }
+    else {
+      Get.snackbar('Operacion no permitida', 'Debes estar mas cerca a la posicion de entrega del pedidio');
+    }
+  }
 
 
   void updateLocation() async {
@@ -182,12 +211,12 @@ class DeliveryOrdersMapController extends GetxController {
       await _determinePosition();
       position = await Geolocator.getLastKnownPosition(); // LAT Y LNG (ACTUAL)
       saveLocation();
-      animateCameraPosition(position?.latitude ?? 20.9690198, position?.longitude ?? -89.6335752);
+      animateCameraPosition(position?.latitude ?? 1.2004567, position?.longitude ?? -77.2787444);
 
       addMarker(
           'delivery',
-          position?.latitude ?? 20.9690198,
-          position?.longitude ?? -89.6335752,
+          position?.latitude ?? 1.2004567,
+          position?.longitude ?? -77.2787444,
           'Tu posicion',
           '',
           deliveryMarker!
@@ -195,8 +224,8 @@ class DeliveryOrdersMapController extends GetxController {
 
       addMarker(
           'home',
-          order.address?.lat ?? 20.9690198,
-          order.address?.lng ?? -89.6335752,
+          order.address?.lat ?? 1.2004567,
+          order.address?.lng ?? -77.2787444,
           'Lugar de entrega',
           '',
           homeMarker!
@@ -205,9 +234,7 @@ class DeliveryOrdersMapController extends GetxController {
       LatLng from = LatLng(position!.latitude, position!.longitude);
       LatLng to = LatLng(order.address?.lat ?? 1.2004567, order.address?.lng ?? -77.2787444);
 
-
       setPolylines(from, to);
-
 
       LocationSettings locationSettings = LocationSettings(
           accuracy: LocationAccuracy.best,
@@ -228,16 +255,13 @@ class DeliveryOrdersMapController extends GetxController {
         );
         animateCameraPosition(position?.latitude ?? 1.2004567, position?.longitude ?? -77.2787444);
         emitPosition();
-        //isCloseToDeliveryPosition();
+        isCloseToDeliveryPosition();
       });
-    }
 
-    catch(e) {
+    } catch(e) {
       print('Error: ${e}');
     }
   }
-
-
 
   void callNumber() async{
     String number = order.client?.phone ?? ''; //set the number here
@@ -249,7 +273,6 @@ class DeliveryOrdersMapController extends GetxController {
       animateCameraPosition(position!.latitude, position!.longitude);
     }
   }
-
 
   void saveLocation() async {
     if (position != null) {
@@ -264,7 +287,8 @@ class DeliveryOrdersMapController extends GetxController {
     controller.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(
             target: LatLng(lat, lng),
-            zoom: 13,
+            zoom: 18,
+
             bearing: 0
         )
     ));
@@ -284,7 +308,6 @@ class DeliveryOrdersMapController extends GetxController {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-
         return Future.error('Location permissions are denied');
       }
     }
@@ -294,13 +317,15 @@ class DeliveryOrdersMapController extends GetxController {
           'Location permissions are permanently denied, we cannot request permissions.');
     }
 
+
     return await Geolocator.getCurrentPosition();
   }
 
-
   void onMapCreate(GoogleMapController controller) {
+    controller.setMapStyle('[{"elementType":"geometry","stylers":[{"color":"#212121"}]},{"elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"elementType":"labels.text.fill","stylers":[{"color":"#757575"}]},{"elementType":"labels.text.stroke","stylers":[{"color":"#212121"}]},{"featureType":"administrative","elementType":"geometry","stylers":[{"color":"#757575"}]},{"featureType":"administrative.country","elementType":"labels.text.fill","stylers":[{"color":"#9e9e9e"}]},{"featureType":"administrative.land_parcel","stylers":[{"visibility":"off"}]},{"featureType":"administrative.locality","elementType":"labels.text.fill","stylers":[{"color":"#bdbdbd"}]},{"featureType":"poi","elementType":"labels.text.fill","stylers":[{"color":"#757575"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#181818"}]},{"featureType":"poi.park","elementType":"labels.text.fill","stylers":[{"color":"#616161"}]},{"featureType":"poi.park","elementType":"labels.text.stroke","stylers":[{"color":"#1b1b1b"}]},{"featureType":"road","elementType":"geometry.fill","stylers":[{"color":"#2c2c2c"}]},{"featureType":"road","elementType":"labels.text.fill","stylers":[{"color":"#8a8a8a"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#373737"}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"color":"#3c3c3c"}]},{"featureType":"road.highway.controlled_access","elementType":"geometry","stylers":[{"color":"#4e4e4e"}]},{"featureType":"road.local","elementType":"labels.text.fill","stylers":[{"color":"#616161"}]},{"featureType":"transit","elementType":"labels.text.fill","stylers":[{"color":"#757575"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#000000"}]},{"featureType":"water","elementType":"labels.text.fill","stylers":[{"color":"#3d3d3d"}]}]');
     mapController.complete(controller);
   }
+
 
   @override
   void onClose() {
@@ -309,5 +334,4 @@ class DeliveryOrdersMapController extends GetxController {
     socket.disconnect();
     positionSubscribe?.cancel();
   }
-
 }
