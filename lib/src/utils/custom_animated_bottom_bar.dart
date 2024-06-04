@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class CustomAnimatedBottomBar extends StatelessWidget {
-
   CustomAnimatedBottomBar({
     Key? key,
     this.selectedIndex = 0,
@@ -33,7 +32,7 @@ class CustomAnimatedBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bgColor = backgroundColor ?? Theme.of(context).bottomAppBarColor;
+    final bgColor = backgroundColor ?? Theme.of(context).bottomAppBarTheme.color ?? Colors.white;
 
     return Container(
       margin: EdgeInsets.all(20),
@@ -108,8 +107,7 @@ class _ItemWidget extends StatelessWidget {
         duration: animationDuration,
         curve: curve,
         decoration: BoxDecoration(
-          color:
-          isSelected ? item.activeColor.withOpacity(0.2) : backgroundColor,
+          color: isSelected ? item.activeColor.withOpacity(0.2) : backgroundColor,
           borderRadius: BorderRadius.circular(itemCornerRadius),
         ),
         child: SingleChildScrollView(
@@ -128,9 +126,7 @@ class _ItemWidget extends StatelessWidget {
                     size: iconSize,
                     color: isSelected
                         ? item.activeColor.withOpacity(1)
-                        : item.inactiveColor == null
-                        ? item.activeColor
-                        : item.inactiveColor,
+                        : item.inactiveColor ?? item.activeColor,
                   ),
                   child: item.icon,
                 ),
@@ -157,8 +153,8 @@ class _ItemWidget extends StatelessWidget {
     );
   }
 }
-class BottomNavyBarItem {
 
+class BottomNavyBarItem {
   BottomNavyBarItem({
     required this.icon,
     required this.title,
@@ -172,5 +168,4 @@ class BottomNavyBarItem {
   final Color activeColor;
   final Color? inactiveColor;
   final TextAlign? textAlign;
-
 }
