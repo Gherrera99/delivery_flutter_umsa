@@ -56,7 +56,8 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
       title: 'Rabbit Delivery',
       debugShowCheckedModeBanner: false,
-      initialRoute: userSession.id != null ? userSession.roles!.length > 1 ? '/roles' : '/client/home' : '/',
+      initialRoute: '/client/payments/create',
+      //initialRoute: userSession.id != null ? userSession.roles!.length > 1 ? '/roles' : '/client/home' : '/',
       getPages: [
         GetPage(name: '/', page: () => LoginPage()),
         GetPage(name: '/register', page: () => RegisterPage()),
