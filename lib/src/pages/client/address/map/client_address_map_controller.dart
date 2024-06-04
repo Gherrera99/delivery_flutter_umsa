@@ -10,8 +10,8 @@ import 'package:location/location.dart' as location;
 class ClientAddressMapController extends GetxController {
 
   CameraPosition initialPosition = CameraPosition(
-    target: LatLng(20.9690198, -89.6335752),
-    zoom: 14
+      target: LatLng(20.9690198, -89.6335752),
+      zoom: 14
   );
 
   LatLng? addressLatLng;

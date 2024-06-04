@@ -27,12 +27,13 @@ class ClientAddressListPage extends StatelessWidget {
           _iconAddressCreate()
         ],
       ),
-      body: Stack(
-        children: [
-          _textSelectAddress(),
-          _listAddress(context),
-
-        ],
+      body: GetBuilder<ClientAddressListController> (
+        builder: (value) => Stack(
+          children: [
+            _textSelectAddress(),
+            _listAddress(context),
+          ],
+        )
       ),
     );
   }
@@ -70,7 +71,7 @@ class ClientAddressListPage extends StatelessWidget {
   }
 
   Widget _radioSelectorAddress(Address address, int index){
-    return Obx(() => Container(
+    return Container(
       margin: EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
@@ -88,16 +89,16 @@ class ClientAddressListPage extends StatelessWidget {
                   Text(
                     address.address ?? '',
                     style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black
                     ),
                   ),
                   Text(
                     address.neighborhood ?? '',
                     style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey[600]
+                        fontSize: 12,
+                        color: Colors.grey[600]
                     ),
                   ),
                 ],
@@ -107,7 +108,7 @@ class ClientAddressListPage extends StatelessWidget {
           Divider(color: Colors.grey[400],)
         ],
       ),
-    ));
+    );
   }
 
   Widget _textSelectAddress() {

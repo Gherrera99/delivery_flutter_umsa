@@ -1,6 +1,7 @@
 import 'package:delivery_flutter_app/src/models/address.dart';
 import 'package:delivery_flutter_app/src/models/response_api.dart';
 import 'package:delivery_flutter_app/src/models/user.dart';
+import 'package:delivery_flutter_app/src/pages/client/address/list/client_address_list_controller.dart';
 import 'package:delivery_flutter_app/src/pages/client/address/map/client_address_map_page.dart';
 import 'package:delivery_flutter_app/src/providers/address_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,6 +23,8 @@ class ClientAddressCreateController extends GetxController {
   User user = User.fromJson(GetStorage().read('user') ?? {});
 
   AddressProvider addressProvider = AddressProvider();
+
+  ClientAddressListController clientAddressListController = Get.find();
 
 
   void openGoogleMaps(BuildContext context) async{
@@ -53,16 +56,16 @@ class ClientAddressCreateController extends GetxController {
 
       ResponseApi responseApi = await addressProvider.create(address);
       Fluttertoast.showToast(msg: responseApi.message ?? '', toastLength: Toast.LENGTH_LONG);
-      Get.back();
+      // Get.back();
 
-      // if (responseApi.success == true) {
-      //   address.id = responseApi.data;
-      //   GetStorage().write('address', address.toJson());
-      //
-      //   clientAddressListController.update();
-      //
-      //   Get.back();
-      // }
+      if (responseApi.success == true) {
+        address.id = responseApi.data;
+        GetStorage().write('address', address.toJson());
+
+        clientAddressListController.update();
+
+        Get.back();
+      }
 
     }
   }

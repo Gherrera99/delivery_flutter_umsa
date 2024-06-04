@@ -12,14 +12,28 @@ class ClientAddressListController extends GetxController {
 
   var radioValue = 0.obs;
 
+  ClientAddressListController(){
+    print('LA DIRECCION DE SESION ${GetStorage().read('address')}');
+  }
+
   Future<List<Address>> getAddress() async {
     address = await addressProvider.findByUser(user.id ?? '');
+
+    Address a = Address.fromJson(GetStorage().read('address') ?? {}); // DIRECCION SELECCIONADA POR EL USUARIO
+    int index = address.indexWhere((ad) => ad.id == a.id);
+
+    if (index != -1) {
+      radioValue.value = index;
+    }
+
     return address;
   }
 
   void handleRadioValueChange(int? value){
     radioValue.value = value!;
     print('VALOR SELECCIONADO');
+    GetStorage().write('address', address[value].toJson());
+    update();
   }
 
   void goToAddressCreate() {
