@@ -206,17 +206,6 @@ class DeliveryOrdersMapPage extends StatelessWidget {
     );
   }
 
-  Widget _iconMyLocation(){
-    return Container(
-      margin: EdgeInsets.only(bottom: 40),
-      child: Center(
-        child: Image.asset('assets/img/my_location_yellow.png',
-          width: 65,
-          height: 65,
-        ),
-      ),
-    );
-  }
 
   Widget _buttonBack() {
     return Container(
@@ -240,12 +229,7 @@ class DeliveryOrdersMapPage extends StatelessWidget {
       onMapCreated: con.onMapCreate,
       myLocationButtonEnabled: false,
       myLocationEnabled: false,
-      onCameraMove: (position) {
-        con.initialPosition = position;
-      },
-    onCameraIdle: () async {
-    await con.setLocationDraggableInfo(); // EMPEZAR A OBTNER LA LAT Y LNG DE LA POSICION CENTRAL DEL MAPA},
-      },
+      markers: Set<Marker>.of(con.markers.values),
     );
   }
 }

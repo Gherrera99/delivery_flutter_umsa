@@ -21,11 +21,17 @@ class DeliveryOrdersMapController extends GetxController {
   var addressName = ''.obs;
 
   Completer<GoogleMapController> mapController = Completer();
-
   Position? position;
+
+  Map<MarkerId, Marker> markers = <MarkerId, Marker>{}.obs;
+  BitmapDescriptor? deliveryMarker;
+  BitmapDescriptor? homeMarker;
+
   DeliveryOrdersMapController() {
     print('Order: ${order.toJson()}');
     checkGPS(); // VERIFICAR SI EL GPS ESTA ACTIVO
+
+
   }
 
   Future setLocationDraggableInfo() async {
@@ -60,8 +66,43 @@ class DeliveryOrdersMapController extends GetxController {
 
   }
 
+  Future<BitmapDescriptor> createMarkerFromAssets(String path) async {
+    ImageConfiguration configuration = ImageConfiguration();
+    BitmapDescriptor descriptor = await BitmapDescriptor.fromAssetImage(
+        configuration, path
+    );
+
+    return descriptor;
+  }
+
+
+  void addMarker(
+      String markerId,
+      double lat,
+      double lng,
+      String title,
+      String content,
+      BitmapDescriptor iconMarker
+      ) {
+    MarkerId id = MarkerId(markerId);
+    Marker marker = Marker(
+        markerId: id,
+        icon: iconMarker,
+        position: LatLng(lat, lng),
+        infoWindow: InfoWindow(title: title, snippet: content)
+    );
+
+    markers[id] = marker;
+
+    update();
+  }
+
+
 
   void checkGPS() async {
+    deliveryMarker = await createMarkerFromAssets('assets/img/delivery_little.png');
+    homeMarker = await createMarkerFromAssets('assets/img/home.png');
+
     bool isLocationEnabled = await Geolocator.isLocationServiceEnabled();
 
     if (isLocationEnabled == true) {
@@ -81,7 +122,27 @@ class DeliveryOrdersMapController extends GetxController {
       await _determinePosition();
       position = await Geolocator.getLastKnownPosition(); // LAT Y LNG (ACTUAL)
       animateCameraPosition(position?.latitude ?? 20.9690198, position?.longitude ?? -89.6335752);
-    } catch(e) {
+
+      addMarker(
+          'delivery',
+          position?.latitude ?? 20.9690198,
+          position?.longitude ?? -89.6335752,
+          'Tu posicion',
+          '',
+          deliveryMarker!
+      );
+
+      addMarker(
+          'home',
+          order.address?.lat ?? 20.9690198,
+          order.address?.lng ?? -89.6335752,
+          'Lugar de entrega',
+          '',
+          homeMarker!
+      );
+    }
+
+    catch(e) {
       print('Error: ${e}');
     }
   }
