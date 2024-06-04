@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:delivery_flutter_app/src/models/order.dart';
+import 'package:delivery_flutter_app/src/providers/orders_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -11,6 +12,7 @@ import 'package:location/location.dart' as location;
 class DeliveryOrdersMapController extends GetxController {
 
   Order order = Order.fromJson(Get.arguments['order'] ?? {});
+  OrdersProvider ordersProvider = OrdersProvider();
 
   CameraPosition initialPosition = CameraPosition(
       target: LatLng(20.9690198, -89.6335752),
@@ -123,6 +125,7 @@ class DeliveryOrdersMapController extends GetxController {
     try{
       await _determinePosition();
       position = await Geolocator.getLastKnownPosition(); // LAT Y LNG (ACTUAL)
+      saveLocation();
       animateCameraPosition(position?.latitude ?? 20.9690198, position?.longitude ?? -89.6335752);
 
       addMarker(
@@ -168,6 +171,15 @@ class DeliveryOrdersMapController extends GetxController {
 
     catch(e) {
       print('Error: ${e}');
+    }
+  }
+
+
+  void saveLocation() async {
+    if (position != null) {
+      order.lat = position!.latitude;
+      order.lng = position!.longitude;
+      await ordersProvider.updateLatLng(order);
     }
   }
 
