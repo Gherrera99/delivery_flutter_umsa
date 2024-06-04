@@ -42,6 +42,21 @@ class DeliveryOrdersMapPage extends StatelessWidget {
         ));
   }
 
+  Widget _buttonBack() {
+    return Container(
+      alignment: Alignment.centerLeft,
+      margin: EdgeInsets.only(left: 20),
+      child: IconButton(
+        onPressed: () => Get.back(),
+        icon: Icon(
+          Icons.arrow_back_ios,
+          color: Colors.black,
+          size: 30,
+        ),
+      ),
+    );
+  }
+
   Widget _buttonAccept(BuildContext context) {
     return Container(
       width: double.infinity,
@@ -129,6 +144,7 @@ class DeliveryOrdersMapPage extends StatelessWidget {
     );
   }
 
+
   Widget _iconCenterMyLocation() {
     return GestureDetector(
       //con.centerPosition()
@@ -180,6 +196,7 @@ class DeliveryOrdersMapPage extends StatelessWidget {
 
               onPressed: () => con.callNumber(),
               icon: Icon(Icons.phone, color: Colors.black),
+
             ),
           )
         ],
@@ -207,20 +224,7 @@ class DeliveryOrdersMapPage extends StatelessWidget {
   }
 
 
-  Widget _buttonBack() {
-    return Container(
-      alignment: Alignment.centerLeft,
-      margin: EdgeInsets.only(left: 20),
-      child: IconButton(
-        onPressed: () => Get.back(),
-        icon: Icon(
-          Icons.arrow_back_ios,
-          color: Colors.black,
-          size: 30,
-        ),
-      ),
-    );
-  }
+
 
   Widget _googleMaps() {
     return GoogleMap(
