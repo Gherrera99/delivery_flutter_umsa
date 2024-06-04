@@ -27,6 +27,8 @@ class DeliveryOrdersMapController extends GetxController {
   BitmapDescriptor? deliveryMarker;
   BitmapDescriptor? homeMarker;
 
+  StreamSubscription? positionSubscribe;
+
   DeliveryOrdersMapController() {
     print('Order: ${order.toJson()}');
     checkGPS(); // VERIFICAR SI EL GPS ESTA ACTIVO
@@ -140,6 +142,28 @@ class DeliveryOrdersMapController extends GetxController {
           '',
           homeMarker!
       );
+
+      LocationSettings locationSettings = LocationSettings(
+          accuracy: LocationAccuracy.best,
+          distanceFilter: 1
+      );
+
+      positionSubscribe = Geolocator.getPositionStream(
+          locationSettings: locationSettings
+      ).listen((Position pos ) { // POSICION EN TIEMPO REAL
+        position = pos;
+        addMarker(
+            'delivery',
+            position?.latitude ?? 1.2004567,
+            position?.longitude ?? -77.2787444,
+            'Tu posicion',
+            '',
+            deliveryMarker!
+        );
+        animateCameraPosition(position?.latitude ?? 1.2004567, position?.longitude ?? -77.2787444);
+        // emitPosition();
+        // isCloseToDeliveryPosition();
+      });
     }
 
     catch(e) {
@@ -188,6 +212,14 @@ class DeliveryOrdersMapController extends GetxController {
 
   void onMapCreate(GoogleMapController controller) {
     mapController.complete(controller);
+  }
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    super.onClose();
+    // socket.disconnect();
+    positionSubscribe?.cancel();
   }
 
 }
