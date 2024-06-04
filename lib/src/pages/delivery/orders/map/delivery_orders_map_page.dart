@@ -230,6 +230,7 @@ class DeliveryOrdersMapPage extends StatelessWidget {
       myLocationButtonEnabled: false,
       myLocationEnabled: false,
       markers: Set<Marker>.of(con.markers.values),
+      polylines: con.polylines,
     );
   }
 }

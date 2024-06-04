@@ -1,8 +1,11 @@
 import 'dart:async';
 
+import 'package:delivery_flutter_app/src/environment/environment.dart';
 import 'package:delivery_flutter_app/src/models/order.dart';
 import 'package:delivery_flutter_app/src/providers/orders_provider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -31,8 +34,12 @@ class DeliveryOrdersMapController extends GetxController {
 
   StreamSubscription? positionSubscribe;
 
+  Set<Polyline> polylines = <Polyline>{}.obs;
+  List<LatLng> points = [];
+
   DeliveryOrdersMapController() {
     print('Order: ${order.toJson()}');
+
     checkGPS(); // VERIFICAR SI EL GPS ESTA ACTIVO
 
 
@@ -121,6 +128,32 @@ class DeliveryOrdersMapController extends GetxController {
   }
 
 
+  Future<void> setPolylines(LatLng from, LatLng to) async {
+    PointLatLng pointFrom = PointLatLng(from.latitude, from.longitude);
+    PointLatLng pointTo = PointLatLng(to.latitude, to.longitude);
+    PolylineResult result = await PolylinePoints().getRouteBetweenCoordinates(
+        Environment.API_KEY_MAPS,
+        pointFrom,
+        pointTo
+    );
+
+    for (PointLatLng point in result.points) {
+      points.add(LatLng(point.latitude, point.longitude));
+    }
+
+    Polyline polyline = Polyline(
+        polylineId: PolylineId('poly'),
+        color: Colors.amber,
+        points: points,
+        width: 5
+    );
+
+    polylines.add(polyline);
+    update();
+  }
+
+
+
   void updateLocation() async {
     try{
       await _determinePosition();
@@ -145,6 +178,13 @@ class DeliveryOrdersMapController extends GetxController {
           '',
           homeMarker!
       );
+
+      LatLng from = LatLng(position!.latitude, position!.longitude);
+      LatLng to = LatLng(order.address?.lat ?? 1.2004567, order.address?.lng ?? -77.2787444);
+
+
+      setPolylines(from, to);
+
 
       LocationSettings locationSettings = LocationSettings(
           accuracy: LocationAccuracy.best,
