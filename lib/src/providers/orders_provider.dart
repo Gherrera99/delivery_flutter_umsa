@@ -12,24 +12,24 @@ class OrdersProvider extends GetConnect {
 
   User userSession = User.fromJson(GetStorage().read('user') ?? {});
 
-  // Future<List<Order>> findByStatus(String status) async {
-  //   Response response = await get(
-  //       '$url/findByStatus/$status',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Authorization': userSession.sessionToken ?? ''
-  //       }
-  //   ); // ESPERAR HASTA QUE EL SERVIDOR NOS RETORNE LA RESPUESTA
-  //
-  //   if (response.statusCode == 401) {
-  //     Get.snackbar('Peticion denegada', 'Tu usuario no tiene permitido leer esta informacion');
-  //     return [];
-  //   }
-  //
-  //   List<Order> orders = Order.fromJsonList(response.body);
-  //
-  //   return orders;
-  // }
+  Future<List<Order>> findByStatus(String status) async {
+    Response response = await get(
+        '$url/findByStatus/$status',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': userSession.sessionToken ?? ''
+        }
+    ); // ESPERAR HASTA QUE EL SERVIDOR NOS RETORNE LA RESPUESTA
+
+    if (response.statusCode == 401) {
+      Get.snackbar('Peticion denegada', 'Tu usuario no tiene permitido leer esta informacion');
+      return [];
+    }
+
+    List<Order> orders = Order.fromJsonList(response.body);
+
+    return orders;
+  }
   //
   // Future<List<Order>> findByDeliveryAndStatus(String idDelivery, String status) async {
   //   Response response = await get(
