@@ -11,6 +11,7 @@ import 'package:delivery_flutter_app/src/pages/home/home_page.dart';
 import 'package:delivery_flutter_app/src/pages/login/login_page.dart';
 import 'package:delivery_flutter_app/src/pages/register/register_page.dart';
 import 'package:delivery_flutter_app/src/pages/restaurant/home/restaurant_home_page.dart';
+import 'package:delivery_flutter_app/src/pages/restaurant/orders/detail/restaurant_orders_detail_page.dart';
 import 'package:delivery_flutter_app/src/pages/restaurant/orders/list/restaurant_orders_list_page.dart';
 import 'package:delivery_flutter_app/src/pages/roles/roles_page.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +60,7 @@ class _MyAppState extends State<MyApp> {
         GetPage(name: '/restaurant/home', page: () => RestaurantHomePage()),
         GetPage(name: '/restaurant/orders/list', page: () => RestaurantOrdersListPage()),
         GetPage(name: '/delivery/orders/list', page: () => DeliveryOrdersListPage()),
+        GetPage(name: '/restaurant/orders/detail', page: () => RestaurantOrdersDetailPage()),
         GetPage(name: '/client/home', page: () => ClientHomePage()),
         GetPage(name: '/client/products/list', page: () => ClientProductsListPage()),
         GetPage(name: '/client/profile/info', page: () => ClientProfileInfoPage()),
