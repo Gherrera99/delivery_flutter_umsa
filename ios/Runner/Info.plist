@@ -10,6 +10,10 @@
 	<string>Necesito permisos para acceder a la camara</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Necesito permisos para acceder al microfono del celular</string>
+	<key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>tel</string>
+    </array>
 	<key>CFBundleDisplayName</key>
 	<string>Delivery Flutter App</string>
 	<key>CFBundleExecutable</key>
