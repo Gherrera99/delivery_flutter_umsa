@@ -12,8 +12,14 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart' as location;
+import 'package:socket_io_client/socket_io_client.dart';
 
 class DeliveryOrdersMapController extends GetxController {
+
+  Socket socket = io('${Environment.API_URL}orders/delivery', <String, dynamic> {
+    'transports': ['websocket'],
+    'autoConnect': false
+  });
 
   Order order = Order.fromJson(Get.arguments['order'] ?? {});
   OrdersProvider ordersProvider = OrdersProvider();
@@ -42,8 +48,14 @@ class DeliveryOrdersMapController extends GetxController {
     print('Order: ${order.toJson()}');
 
     checkGPS(); // VERIFICAR SI EL GPS ESTA ACTIVO
+    connectAndListen();
+  }
 
-
+  void connectAndListen() {
+    socket.connect();
+    socket.onConnect((data) {
+      print('ESTE DISPISITIVO SE CONECTO A SOCKET IO');
+    });
   }
 
   Future setLocationDraggableInfo() async {
@@ -284,7 +296,7 @@ class DeliveryOrdersMapController extends GetxController {
   void onClose() {
     // TODO: implement onClose
     super.onClose();
-    // socket.disconnect();
+    socket.disconnect();
     positionSubscribe?.cancel();
   }
 
