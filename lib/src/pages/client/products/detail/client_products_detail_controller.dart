@@ -10,13 +10,13 @@ class ClientProductsDetailController extends GetxController{
   void checkIfProductsWasAdded(Product product, var price, var counter) {
     price.value = product.price ?? 0.0;
 
-    if (GetStorage().read('shooping_bag') != null){
+    if (GetStorage().read('shopping_bag') != null){
 
-      if(GetStorage().read('shooping_bag') is List<Product>){
-        selectedProducts = GetStorage().read('shooping_bag');
+      if(GetStorage().read('shopping_bag') is List<Product>){
+        selectedProducts = GetStorage().read('shopping_bag');
       }
       else{
-        selectedProducts = Product.fromJsonList(GetStorage().read('shooping_bag'));
+        selectedProducts = Product.fromJsonList(GetStorage().read('shopping_bag'));
 
       }
 
@@ -54,7 +54,7 @@ class ClientProductsDetailController extends GetxController{
         else { // YA HA SIDOO AGREGADO EN STORAGE
           selectedProducts[index].quantity = counter.value;
         }
-        GetStorage().write('shooping_bag', selectedProducts);
+        GetStorage().write('shopping_bag', selectedProducts);
         Fluttertoast.showToast(msg: 'Producto agregado');
       }
 

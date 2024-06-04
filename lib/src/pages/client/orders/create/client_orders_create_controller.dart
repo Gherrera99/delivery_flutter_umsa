@@ -8,15 +8,15 @@ class ClientOrdersCreateController extends GetxController {
   var total = 0.0.obs;
 
   ClientOrdersCreateController() {
-    if (GetStorage().read('shooping_bag') != null){
+    if (GetStorage().read('shopping_bag') != null){
 
-      if(GetStorage().read('shooping_bag') is List<Product>){
-        var result =  GetStorage().read('shooping_bag');
+      if(GetStorage().read('shopping_bag') is List<Product>){
+        var result =  GetStorage().read('shopping_bag');
         selectedProducts.clear();
         selectedProducts.addAll(result);
       }
       else{
-        var result = Product.fromJsonList(GetStorage().read('shooping_bag'));
+        var result = Product.fromJsonList(GetStorage().read('shopping_bag'));
         selectedProducts.clear();
         selectedProducts.addAll(result);
       }
@@ -33,7 +33,7 @@ class ClientOrdersCreateController extends GetxController {
 
   void deleteItem(Product product){
     selectedProducts.remove(product);
-    GetStorage().write('shooping_bag', selectedProducts);
+    GetStorage().write('shopping_bag', selectedProducts);
     getTotal();
   }
 
@@ -42,7 +42,7 @@ class ClientOrdersCreateController extends GetxController {
     selectedProducts.remove(product);
     product.quantity = product.quantity! + 1;
     selectedProducts.insert(index, product);
-    GetStorage().write('shooping_bag', selectedProducts);
+    GetStorage().write('shopping_bag', selectedProducts);
     getTotal();
   }
 

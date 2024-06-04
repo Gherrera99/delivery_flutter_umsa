@@ -13,6 +13,7 @@ class ClientAddressListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: _buttonNext(context),
       appBar: AppBar(
         iconTheme: IconThemeData(
             color: Colors.black
@@ -34,6 +35,26 @@ class ClientAddressListPage extends StatelessWidget {
             _listAddress(context),
           ],
         )
+      ),
+    );
+  }
+
+  Widget _buttonNext(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 50,
+      margin: EdgeInsets.symmetric(horizontal: 40, vertical: 40),
+      child: ElevatedButton(
+          onPressed: () => con.createOrder(),
+          style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(vertical: 15)
+          ),
+          child: Text(
+            'CONTINUAR',
+            style: TextStyle(
+                color: Colors.black
+            ),
+          )
       ),
     );
   }
