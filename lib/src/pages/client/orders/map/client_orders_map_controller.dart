@@ -57,7 +57,7 @@ class ClientOrdersMapController extends GetxController {
       print('ESTE DISPISITIVO SE CONECTO A SOCKET IO');
     });
     listenPosition();
-    //listenToDelivered();
+    listenToDelivered();
   }
 
   void listenPosition() {
@@ -75,15 +75,15 @@ class ClientOrdersMapController extends GetxController {
     });
   }
 
-  // void listenToDelivered() {
-  //   socket.on('delivered/${order.id}', (data) {
-  //     Fluttertoast.showToast(
-  //         msg: 'El estado de la orden se actualizo a entregado',
-  //         toastLength: Toast.LENGTH_LONG
-  //     );
-  //     Get.offNamedUntil('/client/home', (route) => false);
-  //   });
-  // }
+  void listenToDelivered() {
+    socket.on('delivered/${order.id}', (data) {
+      Fluttertoast.showToast(
+          msg: 'El estado de la orden se actualizo a entregado',
+          toastLength: Toast.LENGTH_LONG
+      );
+      Get.offNamedUntil('/client/home', (route) => false);
+    });
+  }
 
   Future setLocationDraggableInfo() async {
 
@@ -127,13 +127,13 @@ class ClientOrdersMapController extends GetxController {
   }
 
   void addMarker(
-    String markerId,
-    double lat,
-    double lng,
-    String title,
-    String content,
-    BitmapDescriptor iconMarker
-  ) {
+      String markerId,
+      double lat,
+      double lng,
+      String title,
+      String content,
+      BitmapDescriptor iconMarker
+      ) {
     MarkerId id = MarkerId(markerId);
     Marker marker = Marker(
         markerId: id,
@@ -192,12 +192,12 @@ class ClientOrdersMapController extends GetxController {
     try{
       await _determinePosition();
       position = await Geolocator.getLastKnownPosition(); // LAT Y LNG (ACTUAL)
-      animateCameraPosition(order.lat ?? 20.9690198, order.lng ?? -89.6335752);
+      animateCameraPosition(order.lat ?? 1.2004567, order.lng ?? -77.2787444);
 
       addMarker(
           'delivery',
-          order.lat ?? 20.9690198,
-          order.lng ?? -89.6335752,
+          order.lat ?? 1.2004567,
+          order.lng ?? -77.2787444,
           'Tu repartidor',
           '',
           deliveryMarker!
@@ -205,15 +205,15 @@ class ClientOrdersMapController extends GetxController {
 
       addMarker(
           'home',
-          order.address?.lat ?? 20.9690198,
-          order.address?.lng ?? -89.6335752,
+          order.address?.lat ?? 1.2004567,
+          order.address?.lng ?? -77.2787444,
           'Lugar de entrega',
           '',
           homeMarker!
       );
 
-      LatLng from = LatLng(order.lat ?? 20.9690198, order.lng ?? -89.6335752);
-      LatLng to = LatLng(order.address?.lat ?? 20.9690198, order.address?.lng ?? -89.6335752);
+      LatLng from = LatLng(order.lat ?? 1.2004567, order.lng ?? -77.2787444);
+      LatLng to = LatLng(order.address?.lat ?? 1.2004567, order.address?.lng ?? -77.2787444);
 
       setPolylines(from, to);
 
@@ -237,11 +237,11 @@ class ClientOrdersMapController extends GetxController {
   Future animateCameraPosition(double lat, double lng) async {
     GoogleMapController controller = await mapController.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(
-      CameraPosition(
-          target: LatLng(lat, lng),
-          zoom: 13,
-          bearing: 0
-      )
+        CameraPosition(
+            target: LatLng(lat, lng),
+            zoom: 13,
+            bearing: 0
+        )
     ));
   }
 
@@ -285,3 +285,8 @@ class ClientOrdersMapController extends GetxController {
     positionSubscribe?.cancel();
   }
 }
+
+///
+/// /
+/// /
+///
