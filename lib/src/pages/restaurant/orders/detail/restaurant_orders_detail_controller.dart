@@ -14,7 +14,7 @@ class RestaurantOrdersDetailController extends GetxController {
   var idDelivery = ''.obs;
 
   UsersProvider usersProvider = UsersProvider();
-  // OrdersProvider ordersProvider = OrdersProvider();
+  OrdersProvider ordersProvider = OrdersProvider();
   List<User> users = <User>[].obs;
 
   RestaurantOrdersDetailController() {
@@ -23,20 +23,20 @@ class RestaurantOrdersDetailController extends GetxController {
     getTotal();
   }
 
-  // void updateOrder() async {
-  //   if (idDelivery.value != '') { // SI SELECCIONO EL DELIVERY
-  //     order.idDelivery = idDelivery.value;
-  //     ResponseApi responseApi = await ordersProvider.updateToDispatched(order);
-  //     Fluttertoast.showToast(msg: responseApi.message ?? '', toastLength: Toast.LENGTH_LONG);
-  //     if (responseApi.success == true) {
-  //       Get.offNamedUntil('/restaurant/home', (route) => false);
-  //     }
-  //   }
-  //   else {
-  //     Get.snackbar('Peticion denegada', 'Debes asignar el repartidor');
-  //   }
-  // }
-  //
+  void updateOrder() async {
+    if (idDelivery.value != '') { // SI SELECCIONO EL DELIVERY
+      order.idDelivery = idDelivery.value;
+      ResponseApi responseApi = await ordersProvider.updateToDispatched(order);
+      Fluttertoast.showToast(msg: responseApi.message ?? '', toastLength: Toast.LENGTH_LONG);
+      if (responseApi.success == true) {
+        Get.offNamedUntil('/restaurant/home', (route) => false);
+      }
+    }
+    else {
+      Get.snackbar('Peticion denegada', 'Debes asignar el repartidor');
+    }
+  }
+
   void getDeliveryMen() async {
     var result = await usersProvider.findDeliveryMen();
     users.clear();

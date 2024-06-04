@@ -184,8 +184,7 @@ class RestaurantOrdersDetailPage extends StatelessWidget {
                   ? Container(
                 margin: EdgeInsets.symmetric(horizontal: 30),
                 child: ElevatedButton(
-                    // onPressed: () => con.updateOrder(),
-                    onPressed: () {},
+                    onPressed: () => con.updateOrder(),
                     style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.all(15)
                     ),
