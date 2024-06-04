@@ -58,6 +58,16 @@ class DeliveryOrdersMapController extends GetxController {
     });
   }
 
+  void emitPosition() {
+    if (position != null) {
+      socket.emit('position', {
+        'id_order': order.id,
+        'lat': position!.latitude,
+        'lng': position!.longitude,
+      });
+    }
+  }
+
   Future setLocationDraggableInfo() async {
 
     double lat = initialPosition.target.latitude;
@@ -217,8 +227,8 @@ class DeliveryOrdersMapController extends GetxController {
             deliveryMarker!
         );
         animateCameraPosition(position?.latitude ?? 1.2004567, position?.longitude ?? -77.2787444);
-        // emitPosition();
-        // isCloseToDeliveryPosition();
+        emitPosition();
+        //isCloseToDeliveryPosition();
       });
     }
 
