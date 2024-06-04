@@ -21,60 +21,58 @@ class ClientProductsListPage extends StatelessWidget {
       length: con.categories.length,
       child: Scaffold(
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(120),
+            preferredSize: Size.fromHeight(115),
             child: AppBar(
               flexibleSpace: Container(
                 margin: EdgeInsets.only(top: 15),
                 alignment: Alignment.topCenter,
                 child: Wrap(
                   direction: Axis.horizontal,
+
                   children: [
                     _textFieldSearch(context),
                     _iconShoppingBag()
-
                   ],
                 ),
               ),
-            bottom: TabBar(
-              isScrollable: true,
-              indicatorColor: Colors.amber,
-              labelColor: Colors.black,
-              unselectedLabelColor: Colors.grey[600],
-              tabs: List<Widget>.generate(con.categories.length, (index) {
-                return Tab(
-                  child: Text(con.categories[index].name ?? ''),
-                );
-              }),
+              bottom: TabBar(
+                isScrollable: true,
+                indicatorColor: Colors.amber,
+                labelColor: Colors.black,
+                unselectedLabelColor: Colors.grey[600],
+                tabs: List<Widget>.generate(con.categories.length, (index) {
+                  return Tab(
+                    child: Text(con.categories[index].name ?? ''),
+                  );
+                }),
+              ),
             ),
           ),
-        ),
-        body: TabBarView(
-          children: con.categories.map((Category category) {
-            return FutureBuilder(
-                future: con.getProducts(category.id ?? '1'),
-                builder: (context, AsyncSnapshot<List<Product>> snapshot){
-                  if(snapshot.hasData){
-
-                    if(snapshot.data!.length > 0){
-                      return ListView.builder(
-                          itemCount: snapshot.data?.length ?? 0,
-                          itemBuilder: (_, index){
-                            return _cardProduct(context, snapshot.data![index]);
-                          }
-                      );
+          body: TabBarView(
+            children: con.categories.map((Category category) {
+              return FutureBuilder(
+                  future: con.getProducts(category.id ?? '1', con.productName.value),
+                  builder: (context, AsyncSnapshot<List<Product>> snapshot) {
+                    if (snapshot.hasData) {
+                      if (snapshot.data!.length > 0) {
+                        return ListView.builder(
+                            itemCount: snapshot.data?.length ?? 0,
+                            itemBuilder: (_, index) {
+                              return _cardProduct(context, snapshot.data![index]);
+                            }
+                        );
+                      }
+                      else {
+                        return NoDataWidget(text: 'No hay productos');
+                      }
                     }
-                    else{
-                      return NoDataWidget(text: 'No hay productos disponibles',);
+                    else {
+                      return NoDataWidget(text: 'No hay productos');
                     }
-
                   }
-                  else{
-                    return NoDataWidget(text: 'No hay productos disponibles',);
-                  }
-                }
-            );
-          }).toList(),
-        )
+              );
+            }).toList(),
+          )
       ),
     ));
   }
@@ -83,13 +81,44 @@ class ClientProductsListPage extends StatelessWidget {
     return SafeArea(
       child: Container(
         margin: EdgeInsets.only(left: 10),
-        child: IconButton(
-          onPressed: () => con.goToOrderCreate(),
-          icon: Icon(
-            Icons.shopping_bag_outlined,
-            size: 35,
-            color: Colors.black,
-          ),
+        child: con.items.value > 0
+            ? Stack(
+          children: [
+            IconButton(
+                onPressed: () => con.goToOrderCreate(),
+                icon: Icon(
+                  Icons.shopping_bag_outlined,
+                  size: 33,
+                )
+            ),
+
+            Positioned(
+                right: 4,
+                top: 12,
+                child: Container(
+                  width: 16,
+                  height: 16,
+                  alignment: Alignment.center,
+                  child: Text(
+                    '${con.items.value}',
+                    style: TextStyle(
+                        fontSize: 12
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(30))
+                  ),
+                )
+            )
+          ],
+        )
+            : IconButton(
+            onPressed: () => con.goToOrderCreate(),
+            icon: Icon(
+              Icons.shopping_bag_outlined,
+              size: 30,
+            )
         ),
       ),
     );
@@ -98,8 +127,9 @@ class ClientProductsListPage extends StatelessWidget {
   Widget _textFieldSearch(BuildContext context) {
     return SafeArea(
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.75,
+        width: MediaQuery.of(context).size.width  * 0.75,
         child: TextField(
+          onChanged: con.onChangeText,
           decoration: InputDecoration(
               hintText: 'Buscar producto',
               suffixIcon: Icon(Icons.search, color: Colors.grey),
@@ -128,7 +158,7 @@ class ClientProductsListPage extends StatelessWidget {
     );
   }
 
-  Widget _cardProduct(BuildContext context, Product product){
+  Widget _cardProduct(BuildContext context, Product product) {
     return GestureDetector(
       onTap: () => con.openBottomSheet(context, product),
       child: Column(
@@ -136,44 +166,35 @@ class ClientProductsListPage extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(top: 15, left: 20, right: 20),
             child: ListTile(
-              title:  Text(
-                  product.name ?? '',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 17
-                ),
-              ),
+              title: Text(product.name ?? ''),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 5,),
+                  SizedBox(height: 5),
                   Text(
-                      product.description ?? '',
+                    product.description ?? '',
                     maxLines: 2,
                     style: TextStyle(
-                      fontSize: 14.5,
-                      color: Colors.grey[600]
+                        fontSize: 13
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 15),
                   Text(
                     '\$${product.price.toString()}',
                     style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold
                     ),
                   ),
                   SizedBox(height: 20),
-      
                 ],
               ),
               trailing: Container(
-                height: 90,
-                width: 80,
+                height: 70,
+                width: 60,
+                // padding: EdgeInsets.all(2),
                 child: ClipRRect(
-                  borderRadius:BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(12),
                   child: FadeInImage(
                     image: product.image1 != null
                         ? NetworkImage(product.image1!)
@@ -186,12 +207,10 @@ class ClientProductsListPage extends StatelessWidget {
               ),
             ),
           ),
-          Divider(height: 1, color: Colors.grey[300], indent: 37,endIndent: 37,)
+          Divider(height: 1, color: Colors.grey[300], indent: 37, endIndent: 37,)
         ],
       ),
     );
   }
-
-
 
 }

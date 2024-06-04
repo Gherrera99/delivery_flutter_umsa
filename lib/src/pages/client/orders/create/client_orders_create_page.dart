@@ -13,7 +13,7 @@ class ClientOrdersCreatePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Scaffold(
+    return Obx (() => Scaffold(
       bottomNavigationBar: Container(
         color: Color.fromRGBO(245, 245, 245, 1),
         height: 100,
@@ -21,25 +21,25 @@ class ClientOrdersCreatePage extends StatelessWidget {
       ),
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Colors.black
+            color: Colors.black
         ),
         title: Text(
           'Mi Orden',
           style: TextStyle(
-            color: Colors.black
+              color: Colors.black
           ),
         ),
       ),
       body: con.selectedProducts.length > 0
-      ? ListView(
+          ? ListView(
         children: con.selectedProducts.map((Product product) {
           return _cardProduct(product);
         }).toList(),
       )
-      : Center(
-        child:
-          NoDataWidget(text: 'No hay ningún producto agregado aún')
-    )
+          : Center(
+          child:
+          NoDataWidget(text: 'No hay ningun producto agregado aun')
+      ),
     ));
   }
 
@@ -53,31 +53,32 @@ class ClientOrdersCreatePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                  'TOTAL: \$${con.total.value}',
+                'TOTAL: \$${con.total.value}',
                 style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                width: MediaQuery.of(context).size.width * 0.4,
+                margin: EdgeInsets.symmetric(horizontal: 30),
+
                 child: ElevatedButton(
                     onPressed: () => con.goToAddressList(),
                     style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(15)
+                        padding: EdgeInsets.all(15)
                     ),
-                    child: Text('CONFIRMAR ORDEN',
+                    child: Text(
+                      'CONFIRMAR ORDER',
                       style: TextStyle(
-                        color: Colors.black
+                          color: Colors.black
                       ),
                     )
                 ),
-              ),
+              )
             ],
           ),
         )
+
       ],
     );
   }
@@ -88,19 +89,17 @@ class ClientOrdersCreatePage extends StatelessWidget {
       child: Row(
         children: [
           _imageProduct(product),
-          SizedBox(width: 20),
+          SizedBox(width: 15),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 product.name ?? '',
                 style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black
+                    fontWeight: FontWeight.bold
                 ),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 7),
               _buttonsAddOrRemove(product)
             ],
           ),
@@ -126,17 +125,14 @@ class ClientOrdersCreatePage extends StatelessWidget {
     );
   }
 
-
-
   Widget _textPrice(Product product) {
     return Container(
       margin: EdgeInsets.only(top: 10),
       child: Text(
-        '\$${ product.price! * product.quantity! }',
+        '\$${ product.price! * product.quantity!}',
         style: TextStyle(
-          fontSize: 15,
-          color: Colors.grey,
-          fontWeight: FontWeight.bold
+            color: Colors.grey,
+            fontWeight: FontWeight.bold
         ),
       ),
     );
@@ -152,10 +148,11 @@ class ClientOrdersCreatePage extends StatelessWidget {
             decoration: BoxDecoration(
                 color: Colors.grey[200],
                 borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(8),
-                bottomLeft: Radius.circular(8)
-              )
+                  topLeft: Radius.circular(8),
+                  bottomLeft: Radius.circular(8),
+                )
             ),
+
             child: Text('-'),
           ),
         ),
@@ -168,12 +165,11 @@ class ClientOrdersCreatePage extends StatelessWidget {
           onTap: () => con.addItem(product),
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-
             decoration: BoxDecoration(
                 color: Colors.grey[200],
                 borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(8),
-                    bottomRight: Radius.circular(8)
+                  topRight: Radius.circular(8),
+                  bottomRight: Radius.circular(8),
                 )
             ),
             child: Text('+'),
@@ -185,10 +181,11 @@ class ClientOrdersCreatePage extends StatelessWidget {
 
   Widget _imageProduct(Product product) {
     return Container(
-      height: 80,
-      width: 80,
+      height: 70,
+      width: 70,
+      // padding: EdgeInsets.all(2),
       child: ClipRRect(
-        borderRadius:BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12),
         child: FadeInImage(
           image: product.image1 != null
               ? NetworkImage(product.image1!)
