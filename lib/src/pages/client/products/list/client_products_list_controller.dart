@@ -70,6 +70,8 @@ class ClientProductsListController extends GetxController {
     }
   }
 
+
+
   void goToOrderCreate() {
     Get.toNamed('/client/orders/create');
   }

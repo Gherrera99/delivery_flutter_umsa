@@ -49,12 +49,11 @@ class ProductsProvider extends GetConnect {
 
     List<Product> products = Product.fromJsonList(response.body);
 
-
     return products;
   }
 
   Future<Stream> create(Product product, List<File> images) async {
-    Uri uri = Uri.http(Environment.API_URL_OLD, '/api/products/create');
+    Uri uri = Uri.parse('${Environment.API_URL}api/products/create');
     final request = http.MultipartRequest('POST', uri);
     request.headers['Authorization'] = userSession.sessionToken ?? '';
 
@@ -71,4 +70,5 @@ class ProductsProvider extends GetConnect {
     return response.stream.transform(utf8.decoder);
   }
 
-}
+} //
+//
