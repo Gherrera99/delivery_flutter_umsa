@@ -28,7 +28,7 @@ class DeliveryOrdersMapController extends GetxController {
 
   CameraPosition initialPosition = CameraPosition(
       target: LatLng(1.2004567, -77.2787444),
-      zoom: 14
+      zoom: 16
   );
 
   LatLng? addressLatLng;
