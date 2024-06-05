@@ -239,7 +239,7 @@ class ClientOrdersMapController extends GetxController {
     controller.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(
             target: LatLng(lat, lng),
-            zoom: 16,
+            zoom: 15,
             bearing: 0
         )
     ));
